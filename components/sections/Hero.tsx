@@ -1,15 +1,15 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Button } from '@/components/ui/Button'
 import { AnimatedSection } from '@/components/ui/AnimatedSection'
 import { CALENDLY_URL } from '@/lib/constants'
 
 const STATS = [
-  { value: '5',   label: 'Core Verticals' },
-  { value: '30+', label: 'Technologies' },
-  { value: '4+',  label: 'Projects' },
-  { value: '24/7', label: 'Infrastructure' },
+  { value: '5',    label: 'Core Verticals' },
+  { value: '35+',  label: 'Technologies' },
+  { value: '4+',   label: 'Projects Delivered' },
+  { value: '2024', label: 'Founded' },
 ]
 
 export function Hero() {
@@ -27,7 +27,7 @@ export function Hero() {
             className="w-1.5 h-1.5 bg-[#FF6A00] rounded-full shadow-[0_0_6px_#FF6A00]"
             style={{ animation: 'blink 2s ease-in-out infinite' }}
           />
-          ZYNEX LABS · COLOMBIA → WORLD
+          Zynex Labs · Founded 2024 · Colombia
         </motion.div>
 
         {/* Headline */}
@@ -47,10 +47,10 @@ export function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-[18px] text-[#666] leading-[1.75] max-w-[500px] mb-10"
+          className="text-[18px] text-[#666] leading-[1.75] max-w-[520px] mb-10"
         >
           AI systems, automation pipelines, Web3 protocols, and scalable software
-          for the companies of tomorrow.
+          for the companies of tomorrow. Senior-led, remote-first, Colombia to the world.
         </motion.p>
 
         {/* CTAs */}
@@ -60,15 +60,18 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex items-center gap-4 mb-20"
         >
-          <Button variant="primary" onClick={() => window.open(CALENDLY_URL, '_blank')}>
-            Schedule a Free Call
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+          <button
+            onClick={() => window.open(CALENDLY_URL, '_blank')}
+            className="inline-flex items-center gap-2 bg-[#FF6A00] text-black font-bold text-[13px] px-8 py-3.5 hover:bg-[#ff7c1a] transition-colors duration-200 cursor-pointer"
           >
-            View Our Work →
-          </Button>
+            Schedule a Free Call
+          </button>
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 border border-[rgba(255,255,255,0.12)] text-[#777] font-bold text-[13px] px-8 py-3.5 hover:border-[rgba(255,255,255,0.3)] hover:text-white transition-all duration-200 no-underline"
+          >
+            View Our Work
+          </Link>
         </motion.div>
 
         {/* Divider */}

@@ -11,7 +11,7 @@ export function Stack() {
             Our<br />Arsenal
           </h2>
           <p className="text-[14px] text-[#444] max-w-[260px] text-right leading-[1.7]">
-            30+ technologies across five core domains.
+            35+ technologies across five core engineering domains.
           </p>
         </div>
 
@@ -22,14 +22,13 @@ export function Stack() {
                 <div className="font-mono text-[9px] text-[#FF6A00] tracking-[3px] mb-4 pb-3 border-b border-[rgba(255,106,0,0.12)]">
                   {group.title}
                 </div>
-                <div className="space-y-0 divide-y divide-[rgba(255,255,255,0.04)]">
+                <div className="divide-y divide-[rgba(255,255,255,0.04)]">
                   {group.items.map(item => (
                     <div
-                      key={item.name}
-                      className="flex items-center gap-2.5 py-2 text-[12px] text-[#444] hover:text-[#FF6A00] transition-colors duration-200 cursor-default"
+                      key={item}
+                      className="py-2 text-[12px] text-[#444] hover:text-[#FF6A00] transition-colors duration-200 cursor-default"
                     >
-                      <span className="text-[13px]">{item.icon}</span>
-                      <span>{item.name}</span>
+                      {item}
                     </div>
                   ))}
                 </div>
