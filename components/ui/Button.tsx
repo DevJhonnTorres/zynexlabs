@@ -8,10 +8,10 @@ interface ButtonProps {
 }
 
 export function Button({ variant, children, onClick, className = '' }: ButtonProps) {
-  const base = 'inline-flex items-center gap-2 font-bold tracking-wide cursor-pointer border-none transition-all duration-[250ms] rounded-sm'
+  const base = 'inline-flex items-center gap-2 font-bold text-[13px] tracking-[0.5px] cursor-pointer transition-all duration-200 border-none'
   const styles = {
-    primary: 'bg-[#FF6A00] text-white px-7 py-3 shadow-[0_4px_28px_rgba(255,106,0,0.35)] hover:-translate-y-0.5 hover:shadow-[0_8px_40px_rgba(255,106,0,0.5)]',
-    ghost:   'bg-[rgba(255,255,255,0.025)] text-[#888] px-7 py-3 border border-[rgba(255,255,255,0.06)] backdrop-blur-sm hover:text-white hover:border-[rgba(255,255,255,0.15)] hover:bg-[rgba(255,255,255,0.05)]',
+    primary: 'bg-[#FF6A00] text-black px-8 py-3.5 hover:bg-[#ff7c1a]',
+    ghost:   'border border-[rgba(255,255,255,0.12)] text-[#777] px-8 py-3.5 hover:border-[rgba(255,255,255,0.3)] hover:text-white',
   }
   return (
     <button className={`${base} ${styles[variant]} ${className}`} onClick={onClick}>

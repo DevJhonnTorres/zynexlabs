@@ -1,107 +1,95 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/Button'
+import { AnimatedSection } from '@/components/ui/AnimatedSection'
 import { CALENDLY_URL } from '@/lib/constants'
 
-const HeroCanvas = dynamic(
-  () => import('@/components/canvas/HeroCanvas').then(m => ({ default: m.HeroCanvas })),
-  { ssr: false }
-)
-
-const HUD = [
-  'top-6 left-6 border-t-2 border-l-2',
-  'top-6 right-6 border-t-2 border-r-2',
-  'bottom-6 left-6 border-b-2 border-l-2',
-  'bottom-6 right-6 border-b-2 border-r-2',
+const STATS = [
+  { value: '5',   label: 'Core Verticals' },
+  { value: '30+', label: 'Technologies' },
+  { value: '4+',  label: 'Projects' },
+  { value: '24/7', label: 'Infrastructure' },
 ]
 
-function useLiveHash() {
-  const [hash, setHash] = useState('0x4f2a...8c91 · BLOCK #19,847,221 · GAS: 12 GWEI')
-  useEffect(() => {
-    const id = setInterval(() => {
-      const h = () => Math.floor(Math.random() * 0xffff).toString(16).padStart(4, '0')
-      const block = (19847221 + Math.floor(Math.random() * 100)).toLocaleString()
-      const gas = Math.floor(10 + Math.random() * 18)
-      setHash(`0x${h()}...${h()} · BLOCK #${block} · GAS: ${gas} GWEI`)
-    }, 3500)
-    return () => clearInterval(id)
-  }, [])
-  return hash
-}
-
 export function Hero() {
-  const hash = useLiveHash()
-
   return (
-    <section className="relative z-[5] min-h-[calc(100vh-64px)] grid grid-cols-[1.1fr_0.9fr] items-center gap-12 px-12 py-20">
-      {HUD.map((cls, i) => (
-        <span key={i} className={`absolute w-7 h-7 border-[rgba(255,106,0,0.5)] pointer-events-none ${cls}`} />
-      ))}
+    <section className="min-h-[calc(100vh-64px)] flex flex-col justify-center border-b border-[rgba(255,255,255,0.07)] px-12 py-24">
+      <div className="max-w-[1200px] mx-auto w-full">
+        {/* Eyebrow */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-2.5 font-mono text-[11px] tracking-[4px] text-[rgba(255,106,0,0.7)] uppercase mb-10"
+        >
+          <span
+            className="w-1.5 h-1.5 bg-[#FF6A00] rounded-full shadow-[0_0_6px_#FF6A00]"
+            style={{ animation: 'blink 2s ease-in-out infinite' }}
+          />
+          ZYNEX LABS · COLOMBIA → WORLD
+        </motion.div>
 
-      {/* Left: Text */}
-      <motion.div
-        initial={{ opacity: 0, x: -40 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className="inline-flex items-center gap-2 border border-[rgba(255,106,0,0.22)] rounded-full px-3.5 py-1 font-mono text-[9px] tracking-[3px] uppercase text-[#FF6A00] bg-[rgba(255,106,0,0.08)] mb-7">
-          <span className="w-1.5 h-1.5 bg-[#FF6A00] rounded-full shadow-[0_0_8px_#FF6A00]" style={{ animation: 'blink 1.6s ease-in-out infinite' }} />
-          ADVANCED TECHNOLOGY INFRASTRUCTURE
-        </div>
+        {/* Headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="text-[clamp(54px,8vw,110px)] font-black leading-[0.93] tracking-[-4px] mb-8"
+        >
+          We Build<br />
+          Digital<br />
+          <span className="text-[#FF6A00]">Infrastructure.</span>
+        </motion.h1>
 
-        <div className="font-mono text-[9px] text-[rgba(255,106,0,0.35)] tracking-wide mb-5 transition-all duration-500">
-          {hash}
-        </div>
+        {/* Description */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="text-[18px] text-[#666] leading-[1.75] max-w-[500px] mb-10"
+        >
+          AI systems, automation pipelines, Web3 protocols, and scalable software
+          for the companies of tomorrow.
+        </motion.p>
 
-        <h1 className="text-[clamp(40px,5.5vw,68px)] font-black leading-[1.04] tracking-[-2px] mb-6">
-          Engineering<br />
-          <span style={{
-            background: 'linear-gradient(95deg, #FF6A00 0%, #FF9A40 50%, #FF6A00 100%)',
-            backgroundSize: '200% auto',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            animation: 'gradient-shimmer 4s linear infinite',
-          }}>
-            Intelligent
-          </span><br />
-          Digital Infra
-        </h1>
-
-        <p className="text-[15px] text-[#888] leading-[1.75] max-w-[460px] mb-9 border-l-2 border-[rgba(255,106,0,0.22)] pl-4">
-          Zynex Labs builds <strong className="text-[#ccc] font-medium">advanced technological solutions</strong> —
-          AI, enterprise automation, high-performance software and Web3 infrastructure for innovative companies.
-        </p>
-
-        <div className="flex gap-3.5 flex-wrap mb-12">
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex items-center gap-4 mb-20"
+        >
           <Button variant="primary" onClick={() => window.open(CALENDLY_URL, '_blank')}>
-            📅 Schedule a Meeting
+            Schedule a Free Call
           </Button>
-          <Button variant="ghost">Explore Projects →</Button>
-        </div>
+          <Button
+            variant="ghost"
+            onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            View Our Work →
+          </Button>
+        </motion.div>
 
-        <div className="flex border border-[rgba(255,255,255,0.06)] rounded-[4px] overflow-hidden">
-          {[['5+', 'PROJECTS'], ['4', 'VERTICALS'], ['∞', 'SCALE'], ['100%', 'CUSTOM']].map(([n, l]) => (
-            <div key={l} className="flex-1 px-5 py-4 border-r border-[rgba(255,255,255,0.06)] last:border-r-0 relative">
-              <span className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-[#FF6A00] to-transparent" />
-              <div className="font-mono text-[26px] font-black text-[#FF6A00]" style={{ textShadow: '0 0 20px rgba(255,106,0,0.4)' }}>{n}</div>
-              <div className="font-mono text-[8px] text-[#444] tracking-[2px] mt-1">{l}</div>
-            </div>
+        {/* Divider */}
+        <div className="h-px bg-[rgba(255,255,255,0.07)] mb-12" />
+
+        {/* Stats */}
+        <div className="grid grid-cols-4 gap-10">
+          {STATS.map((stat, i) => (
+            <AnimatedSection key={stat.label} delay={i * 0.08} direction="up">
+              <div>
+                <div className="text-[clamp(38px,4vw,60px)] font-black tracking-[-2px] text-white leading-none mb-2">
+                  {stat.value}
+                </div>
+                <div className="font-mono text-[10px] text-[#444] tracking-[3px] uppercase">
+                  {stat.label}
+                </div>
+              </div>
+            </AnimatedSection>
           ))}
         </div>
-      </motion.div>
-
-      {/* Right: Canvas */}
-      <motion.div
-        initial={{ opacity: 0, x: 40 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-      >
-        <HeroCanvas />
-      </motion.div>
+      </div>
     </section>
   )
 }
