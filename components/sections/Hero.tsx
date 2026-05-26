@@ -42,6 +42,17 @@ export function Hero() {
           <span className="text-[#FF6A00]">Infrastructure.</span>
         </motion.h1>
 
+        {/* Secondary statement */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="text-[clamp(20px,2.2vw,30px)] font-black tracking-[-1px] leading-none mb-8 text-[#ccc]"
+        >
+          We Write the Rules.{' '}
+          <span className="text-[#FF6A00]">On-Chain.</span>
+        </motion.p>
+
         {/* Description */}
         <motion.p
           initial={{ opacity: 0, y: 16 }}
