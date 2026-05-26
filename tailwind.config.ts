@@ -9,8 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        orange: '#FF6A00',
+      },
+      fontFamily: {
+        mono: ['Courier New', 'monospace'],
       },
     },
   },
