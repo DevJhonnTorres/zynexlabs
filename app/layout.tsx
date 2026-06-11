@@ -33,15 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* Single subtle top glow — shared across all pages */}
-        <div
-          aria-hidden
-          style={{
-            position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
-            background: 'radial-gradient(ellipse 70% 45% at 50% -5%, rgba(255,106,0,0.06) 0%, transparent 65%)',
-          }}
-        />
-        <div className="relative z-[5] flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen">
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
