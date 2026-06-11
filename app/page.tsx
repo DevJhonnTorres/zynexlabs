@@ -1,19 +1,16 @@
 import Link from 'next/link'
 import { AnimatedSection } from '@/components/ui/AnimatedSection'
-import { Hero } from '@/components/sections/Hero'
 import { ScrollCanvas } from '@/components/canvas/ScrollCanvas'
 import { SERVICES, PROJECTS } from '@/lib/constants'
 
 export default function Home() {
   return (
     <>
-      <Hero />
-
-      {/* ── Scroll-driven 3D canvas (Dirac-style) ── */}
+      {/* ── Scroll-driven 3D canvas with hero overlay ── */}
       <ScrollCanvas />
 
       {/* ── Services overview ── */}
-      <section className="border-b border-[var(--border)] px-12 py-24">
+      <section className="px-12 py-24">
         <div className="max-w-[1200px] mx-auto">
           <div className="font-mono text-[10px] tracking-[4px] text-[var(--label)] mb-4">01 · SERVICES</div>
           <div className="flex items-end justify-between mb-14">
@@ -48,7 +45,7 @@ export default function Home() {
       </section>
 
       {/* ── Projects overview ── */}
-      <section className="border-b border-[var(--border)] px-12 py-24">
+      <section className="px-12 py-24">
         <div className="max-w-[1200px] mx-auto">
           <div className="font-mono text-[10px] tracking-[4px] text-[var(--label)] mb-4">02 · PROJECTS</div>
           <div className="flex items-end justify-between mb-14">
