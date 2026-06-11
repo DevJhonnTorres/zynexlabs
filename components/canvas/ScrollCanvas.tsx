@@ -48,8 +48,8 @@ export function ScrollCanvas() {
 
     // ── Resize ──
     function onResize() {
-      const W = canvas.offsetWidth
-      const H = canvas.offsetHeight
+      const W = canvas!.offsetWidth
+      const H = canvas!.offsetHeight
       renderer.setSize(W, H)
       camera.aspect = W / H
       camera.updateProjectionMatrix()
@@ -61,11 +61,11 @@ export function ScrollCanvas() {
     // ── Scroll ──
     function onScroll() {
       const sectionTop =
-        section.getBoundingClientRect().top + window.scrollY
+        section!.getBoundingClientRect().top + window.scrollY
       progressRef.current = calcScrollProgress(
         window.scrollY,
         sectionTop,
-        section.offsetHeight,
+        section!.offsetHeight,
         window.innerHeight,
       )
 
