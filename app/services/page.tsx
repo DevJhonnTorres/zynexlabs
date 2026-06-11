@@ -15,36 +15,35 @@ export default function ServicesPage() {
       <PageHeader
         section="01 · SERVICES"
         title="What We Build"
-        subtitle="Five specialized verticals covering the full spectrum of modern technology infrastructure. Each discipline is staffed by engineers who work in it daily — not generalists who pick up new stacks per project."
+        subtitle="Five specialized verticals covering the full spectrum of modern technology infrastructure."
       />
 
-      {/* Detailed service sections */}
       {SERVICES.map((svc, i) => (
         <section
           key={svc.slug}
           id={svc.slug}
-          className={`border-b border-[rgba(255,255,255,0.07)] px-12 py-20 ${
-            i % 2 === 1 ? 'bg-[rgba(255,255,255,0.015)]' : ''
+          className={`border-b border-[var(--border)] px-12 py-20 ${
+            i % 2 === 1 ? 'bg-[var(--surface)]' : ''
           }`}
         >
           <div className="max-w-[1200px] mx-auto">
             <div className="grid grid-cols-[1fr_1.5fr] gap-20 items-start">
-              {/* Left: title + description + tech */}
               <div className="sticky top-24">
-                <div className="font-mono text-[10px] tracking-[3px] text-[rgba(255,106,0,0.6)] mb-3">{svc.num}</div>
+                <div className="font-mono text-[10px] tracking-[3px] text-[var(--label)] mb-3">{svc.num}</div>
                 <h2 className="text-[clamp(26px,2.8vw,38px)] font-extrabold tracking-[-1.5px] leading-[1.1] mb-4">
                   {svc.title}
                 </h2>
-                <p className="text-[14px] text-[#FF6A00] font-medium mb-6 leading-[1.5]">{svc.tagline}</p>
-                <p className="text-[14px] text-[#555] leading-[1.9] mb-10">{svc.description}</p>
-
+                <p className="text-[14px] text-[var(--muted)] font-medium mb-6 leading-[1.5] opacity-60">
+                  {svc.tagline}
+                </p>
+                <p className="text-[14px] text-[var(--dim)] leading-[1.9] mb-10 opacity-70">{svc.description}</p>
                 <div>
-                  <div className="font-mono text-[9px] tracking-[2px] text-[#333] mb-4 uppercase">Technologies</div>
+                  <div className="font-mono text-[9px] tracking-[2px] text-[var(--dim)] mb-4 uppercase">Technologies</div>
                   <div className="flex flex-wrap gap-2">
                     {svc.tech.map(t => (
                       <span
                         key={t}
-                        className="font-mono text-[10px] text-[#444] border border-[rgba(255,255,255,0.07)] px-2.5 py-1.5 hover:border-[rgba(255,106,0,0.2)] hover:text-[#666] transition-colors"
+                        className="font-mono text-[10px] text-[var(--dim)] border border-[var(--border)] px-2.5 py-1.5 hover:border-[rgba(255,255,255,0.18)] hover:text-[var(--muted)] transition-colors"
                       >
                         {t}
                       </span>
@@ -53,17 +52,16 @@ export default function ServicesPage() {
                 </div>
               </div>
 
-              {/* Right: scope of work */}
               <div>
-                <div className="font-mono text-[9px] tracking-[2px] text-[#333] mb-5 uppercase">Scope of Work</div>
-                <div className="divide-y divide-[rgba(255,255,255,0.05)]">
+                <div className="font-mono text-[9px] tracking-[2px] text-[var(--dim)] mb-5 uppercase">Scope of Work</div>
+                <div className="divide-y divide-[var(--border)]">
                   {svc.items.map((item, j) => (
                     <AnimatedSection key={item} delay={j * 0.04} direction="none">
                       <div className="py-4 flex items-start gap-5 cursor-default group">
-                        <span className="font-mono text-[9px] text-[#2a2a2a] mt-0.5 w-6 shrink-0 group-hover:text-[rgba(255,106,0,0.4)] transition-colors">
+                        <span className="font-mono text-[9px] text-[var(--dim)] mt-0.5 w-6 shrink-0">
                           {String(j + 1).padStart(2, '0')}
                         </span>
-                        <span className="text-[14px] text-[#555] leading-[1.7] group-hover:text-[#888] transition-colors">
+                        <span className="text-[14px] text-[var(--dim)] leading-[1.7] group-hover:text-[var(--muted)] transition-colors opacity-70">
                           {item}
                         </span>
                       </div>
@@ -77,21 +75,21 @@ export default function ServicesPage() {
       ))}
 
       {/* Methodology */}
-      <section className="border-b border-[rgba(255,255,255,0.07)] px-12 py-24 bg-[rgba(255,255,255,0.015)]">
+      <section className="border-b border-[var(--border)] px-12 py-24">
         <div className="max-w-[1200px] mx-auto">
-          <div className="font-mono text-[10px] tracking-[3px] text-[rgba(255,106,0,0.6)] mb-4">METHODOLOGY</div>
+          <div className="font-mono text-[10px] tracking-[3px] text-[var(--label)] mb-4">METHODOLOGY</div>
           <h2 className="text-[clamp(28px,3vw,42px)] font-extrabold tracking-[-1.5px] leading-[1.1] mb-16">
             How We<br />Build
           </h2>
           <div className="grid grid-cols-5 gap-6 relative">
-            <div className="absolute top-[10px] left-0 right-0 h-px bg-[rgba(255,255,255,0.06)]" />
+            <div className="absolute top-[10px] left-0 right-0 h-px bg-[var(--border)]" />
             {METHODOLOGY_STEPS.map((step, i) => (
               <AnimatedSection key={step.num} delay={i * 0.1} direction="up">
                 <div className="relative pt-8">
-                  <div className="absolute top-[6px] left-0 w-2 h-2 rounded-full bg-[#FF6A00] shadow-[0_0_10px_rgba(255,106,0,0.7)]" />
-                  <div className="font-mono text-[9px] text-[rgba(255,106,0,0.35)] tracking-[2px] mb-2">{step.num}</div>
-                  <div className="text-[13px] font-bold text-[#ccc] mb-2">{step.title}</div>
-                  <div className="text-[11px] text-[#444] leading-[1.7]">{step.desc}</div>
+                  <div className="absolute top-[6px] left-0 w-2 h-2 rounded-full bg-white" />
+                  <div className="font-mono text-[9px] text-[var(--dim)] tracking-[2px] mb-2">{step.num}</div>
+                  <div className="text-[13px] font-bold text-white mb-2">{step.title}</div>
+                  <div className="text-[11px] text-[var(--dim)] leading-[1.7] opacity-70">{step.desc}</div>
                 </div>
               </AnimatedSection>
             ))}
@@ -106,12 +104,12 @@ export default function ServicesPage() {
             <h2 className="text-[clamp(28px,3.5vw,48px)] font-black tracking-[-2px] leading-[1.05] mb-6">
               Ready to start a project?
             </h2>
-            <p className="text-[15px] text-[#555] leading-[1.75] mb-8">
-              Book a free 30-minute discovery call. We will review your requirements and tell you exactly how we would approach them.
+            <p className="text-[15px] text-[var(--muted)] leading-[1.75] mb-8 opacity-50">
+              Book a free 30-minute discovery call.
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 bg-[#FF6A00] text-black font-bold text-[13px] px-10 py-4 hover:bg-[#ff7c1a] transition-colors duration-200 no-underline"
+              className="inline-flex items-center gap-2 bg-white text-black font-bold text-[13px] px-10 py-4 hover:bg-[rgba(255,255,255,0.85)] transition-colors duration-200 no-underline"
             >
               Book a Discovery Call
             </Link>
