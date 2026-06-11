@@ -4,28 +4,17 @@ import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
-import { calcScrollProgress, smoothstep } from '@/lib/scroll-utils'
+import { smoothstep } from '@/lib/scroll-utils'
 import { CALENDLY_URL } from '@/lib/constants'
 
-const PHRASES = [
-  'Engineering without compromise.',
-  'Every system built to last five years, not five months.',
-  'Senior-led, remote-first, Colombia to the world.',
-  'AI · Web3 · Cloud — the infrastructure of tomorrow.',
-] as const
-
 export function ScrollCanvas() {
-  const sectionRef = useRef<HTMLElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const progressBarRef = useRef<HTMLDivElement>(null)
-  const phraseRef = useRef<HTMLParagraphElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
   const progressRef = useRef(0)
 
   useEffect(() => {
     const canvas = canvasRef.current
-    const section = sectionRef.current
-    if (!canvas || !section) return
+    if (!canvas) return
 
     // ── Renderer ──
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
@@ -69,11 +58,10 @@ export function ScrollCanvas() {
     scene.add(nodePoints)
 
     // ── Blockchain connections (LineSegments) ──
-    // Precompute connected pairs from target proximity (nearest blockchain neighbors)
     const n = targetPositions.length / 3
     const pairs: [number, number][] = []
-    const MIN_D2 = 0.09  // filter zero-length duplicate vertices
-    const MAX_D2 = 3.24  // 1.8² — capture nearest neighbors at 2.5x scale
+    const MIN_D2 = 0.09
+    const MAX_D2 = 3.24  // 1.8² — nearest neighbors at 2.5x scale
     for (let i = 0; i < n; i++) {
       for (let j = i + 1; j < n; j++) {
         const dx = targetPositions[j * 3]     - targetPositions[i * 3]
@@ -92,30 +80,19 @@ export function ScrollCanvas() {
 
     // ── Resize ──
     function onResize() {
-      const W = canvas!.offsetWidth
-      const H = canvas!.offsetHeight
+      const W = window.innerWidth
+      const H = window.innerHeight
       renderer.setSize(W, H)
       camera.aspect = W / H
       camera.updateProjectionMatrix()
     }
-    const ro = new ResizeObserver(onResize)
-    ro.observe(canvas)
+    window.addEventListener('resize', onResize)
     onResize()
 
-    // ── Scroll ──
+    // ── Scroll: progress based on first 3 viewport heights ──
     function onScroll() {
-      const sectionTop = section!.getBoundingClientRect().top + window.scrollY
-      progressRef.current = calcScrollProgress(
-        window.scrollY, sectionTop, section!.offsetHeight, window.innerHeight,
-      )
-      if (progressBarRef.current) {
-        progressBarRef.current.style.width = `${progressRef.current * 100}%`
-      }
-      if (phraseRef.current) {
-        const idx = Math.min(Math.floor(progressRef.current * PHRASES.length), PHRASES.length - 1)
-        phraseRef.current.textContent = PHRASES[idx]
-      }
-      // Hero fades out as blockchain starts forming
+      progressRef.current = Math.max(0, Math.min(1, window.scrollY / (window.innerHeight * 3)))
+
       if (heroRef.current) {
         const opacity = 1 - smoothstep(0.05, 0.38, progressRef.current)
         heroRef.current.style.opacity = String(opacity)
@@ -184,7 +161,7 @@ export function ScrollCanvas() {
     return () => {
       cancelAnimationFrame(animId)
       window.removeEventListener('scroll', onScroll)
-      ro.disconnect()
+      window.removeEventListener('resize', onResize)
       renderer.dispose()
       sphereGeo.dispose(); sphereMat.dispose()
       nodeGeo.dispose(); nodeMat.dispose()
@@ -193,116 +170,87 @@ export function ScrollCanvas() {
   }, [])
 
   return (
-    <section ref={sectionRef} style={{ height: '400vh' }}>
-      {/* Sticky full-viewport frame */}
-      <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: 'var(--bg)' }}>
-
-        {/* Three.js canvas — fills the sticky frame */}
-        <canvas
-          ref={canvasRef}
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }}
-        />
-
-        {/* Gradient: left-side darkening for text legibility */}
-        <div style={{
-          position: 'absolute', inset: 0, pointerEvents: 'none',
-          background: 'linear-gradient(108deg, rgba(4,4,10,0.75) 0%, rgba(4,4,10,0.3) 52%, transparent 100%)',
-        }} />
-
-        {/* ── Hero content (fades out as blockchain forms) ── */}
-        <div
-          ref={heroRef}
-          className="absolute inset-0 flex flex-col justify-between px-12 py-20"
-          style={{ zIndex: 1, transition: 'opacity 200ms linear' }}
-        >
-          {/* Eyebrow */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="font-mono text-[9px] tracking-[5px] text-[var(--label)] uppercase max-w-[1200px] mx-auto w-full"
-          >
-            DIGITAL ENGINEERING STUDIO · COLOMBIA → WORLD
-          </motion.div>
-
-          {/* Headline */}
-          <div className="max-w-[1200px] mx-auto w-full">
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[clamp(56px,8vw,110px)] font-black leading-[0.93] tracking-[-4px] text-white"
-            >
-              We Build<br />
-              Infrastructure<br />
-              <span className="text-[var(--dim)]">That Lasts.</span>
-            </motion.h1>
-          </div>
-
-          {/* Subtext + CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="max-w-[1200px] mx-auto w-full flex items-end justify-between"
-          >
-            <p className="text-[15px] text-[var(--muted)] leading-[1.75] max-w-[360px] m-0 opacity-60">
-              AI · Web3 · Cloud · Software Development<br />
-              Senior-led. Remote-first. Colombia.
-            </p>
-            <div className="flex flex-col items-end gap-3">
-              <button
-                onClick={() => window.open(CALENDLY_URL, '_blank')}
-                className="bg-white text-black font-bold text-[12px] tracking-[2px] px-10 py-3.5 hover:bg-[rgba(255,255,255,0.85)] transition-colors cursor-pointer"
-              >
-                START A PROJECT
-              </button>
-              <Link
-                href="/projects"
-                className="text-[12px] text-[var(--dim)] hover:text-white transition-colors no-underline tracking-[1px]"
-              >
-                View our work →
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* ── Scroll phrases + progress bar (always visible at bottom) ── */}
-        <div
-          className="absolute inset-0 flex flex-col justify-end px-12 pb-10 pointer-events-none"
-          style={{ zIndex: 1 }}
-        >
-          <div className="max-w-[1200px] mx-auto w-full">
-            <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', marginBottom: 14 }}>
-              <div
-                ref={progressBarRef}
-                style={{ height: '100%', background: '#fff', width: '0%', transition: 'width 80ms linear' }}
-              />
-            </div>
-            <p
-              ref={phraseRef}
-              className="m-0 text-[15px] leading-[1.65] max-w-[440px]"
-              style={{ color: 'rgba(255,255,255,0.38)', fontFamily: 'var(--font-geist-sans)' }}
-            >
-              {PHRASES[0]}
-            </p>
-            <div
-              className="font-mono text-[9px] tracking-[4px] mt-2"
-              style={{ color: 'rgba(255,255,255,0.1)' }}
-            >
-              ↓ SCROLL TO EXPLORE
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom fade — blends into the sections below */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '18vh',
-          background: 'linear-gradient(to bottom, transparent, var(--bg))',
+    <>
+      {/* Fixed canvas — background of the entire page */}
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          display: 'block',
+          zIndex: 0,
           pointerEvents: 'none',
-          zIndex: 2,
-        }} />
+        }}
+      />
+
+      {/* Fixed gradient — left-side darkening for text legibility */}
+      <div style={{
+        position: 'fixed',
+        inset: 0,
+        pointerEvents: 'none',
+        zIndex: 1,
+        background: 'linear-gradient(108deg, rgba(4,4,10,0.75) 0%, rgba(4,4,10,0.3) 52%, transparent 100%)',
+      }} />
+
+      {/* Fixed hero overlay — fades out as user scrolls */}
+      <div
+        ref={heroRef}
+        className="fixed inset-0 flex flex-col justify-between px-12 py-20"
+        style={{ zIndex: 2, transition: 'opacity 200ms linear' }}
+      >
+        {/* Eyebrow */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="font-mono text-[9px] tracking-[5px] text-[var(--label)] uppercase max-w-[1200px] mx-auto w-full"
+        >
+          DIGITAL ENGINEERING STUDIO · COLOMBIA → WORLD
+        </motion.div>
+
+        {/* Headline */}
+        <div className="max-w-[1200px] mx-auto w-full">
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-[clamp(56px,8vw,110px)] font-black leading-[0.93] tracking-[-4px] text-white"
+          >
+            We Build<br />
+            Infrastructure<br />
+            <span className="text-[var(--dim)]">That Lasts.</span>
+          </motion.h1>
+        </div>
+
+        {/* Subtext + CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="max-w-[1200px] mx-auto w-full flex items-end justify-between"
+        >
+          <p className="text-[15px] text-[var(--muted)] leading-[1.75] max-w-[360px] m-0 opacity-60">
+            AI · Web3 · Cloud · Software Development<br />
+            Senior-led. Remote-first. Colombia.
+          </p>
+          <div className="flex flex-col items-end gap-3">
+            <button
+              onClick={() => window.open(CALENDLY_URL, '_blank')}
+              className="bg-white text-black font-bold text-[12px] tracking-[2px] px-10 py-3.5 hover:bg-[rgba(255,255,255,0.85)] transition-colors cursor-pointer"
+            >
+              START A PROJECT
+            </button>
+            <Link
+              href="/projects"
+              className="text-[12px] text-[var(--dim)] hover:text-white transition-colors no-underline tracking-[1px]"
+            >
+              View our work →
+            </Link>
+          </div>
+        </motion.div>
       </div>
-    </section>
+    </>
   )
 }

@@ -6,11 +6,14 @@ import { SERVICES, PROJECTS } from '@/lib/constants'
 export default function Home() {
   return (
     <>
-      {/* ── Scroll-driven 3D canvas with hero overlay ── */}
+      {/* Fixed 3D canvas + hero overlay — background of the entire page */}
       <ScrollCanvas />
 
+      {/* Hero spacer — scroll room while fixed hero is visible */}
+      <div style={{ height: '100vh', position: 'relative', zIndex: 3 }} />
+
       {/* ── Services overview ── */}
-      <section className="px-12 py-24">
+      <section className="px-12 py-24" style={{ background: 'var(--bg)', position: 'relative', zIndex: 3 }}>
         <div className="max-w-[1200px] mx-auto">
           <div className="font-mono text-[10px] tracking-[4px] text-[var(--label)] mb-4">01 · SERVICES</div>
           <div className="flex items-end justify-between mb-14">
@@ -45,7 +48,7 @@ export default function Home() {
       </section>
 
       {/* ── Projects overview ── */}
-      <section className="px-12 py-24">
+      <section className="px-12 py-24" style={{ background: 'var(--bg)', position: 'relative', zIndex: 3 }}>
         <div className="max-w-[1200px] mx-auto">
           <div className="font-mono text-[10px] tracking-[4px] text-[var(--label)] mb-4">02 · PROJECTS</div>
           <div className="flex items-end justify-between mb-14">
@@ -94,7 +97,7 @@ export default function Home() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="px-12 py-32 text-center">
+      <section className="px-12 py-32 text-center" style={{ background: 'var(--bg)', position: 'relative', zIndex: 3 }}>
         <div className="max-w-[640px] mx-auto">
           <AnimatedSection>
             <div className="font-mono text-[9px] tracking-[4px] text-[var(--label)] mb-8 flex justify-center">
