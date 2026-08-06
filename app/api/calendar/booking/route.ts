@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createBooking, getFreeSlots, OFFICE } from '@/lib/google-calendar'
+import { createBooking, getFreeSlots } from '@/lib/google-calendar'
 
 export const dynamic = 'force-dynamic'
 
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'slot no longer available' }, { status: 409 })
     }
 
-    const event = await createBooking({ date, slotIso, name, email, message })
+    const event = await createBooking({ slotIso, name, email, message })
     return NextResponse.json({
       ok: true,
       eventId: event.id,
