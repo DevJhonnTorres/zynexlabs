@@ -127,6 +127,7 @@ function initScene(
   // ── Renderer ──
   const isMobile = window.innerWidth < 768
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile })
+  renderer.setClearColor(0x000000, 1)
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2))
 
   // ── Scene / Camera ──
@@ -331,7 +332,8 @@ function init2DWorld(
     const p = progressRef.current
     const W = window.innerWidth
     const H = window.innerHeight
-    ctx.clearRect(0, 0, W, H)
+    ctx.fillStyle = '#000'
+    ctx.fillRect(0, 0, W, H)
 
     // Rotación: eje Y lento + eje X
     const ry = t * 0.11
