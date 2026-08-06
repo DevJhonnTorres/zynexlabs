@@ -105,7 +105,7 @@ export async function createBooking(opts: {
   name: string
   email: string
   message?: string
-}): Promise<any> {
+}): Promise<{ id: string; htmlLink?: string }> {
   const { slotIso, name, email, message } = opts
   const start = new Date(slotIso)
   const end = new Date(start.getTime() + OFFICE.slotMinutes * 60 * 1000)
