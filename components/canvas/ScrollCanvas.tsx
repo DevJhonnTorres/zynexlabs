@@ -348,10 +348,10 @@ function init2DWorld(
     const cx = W / 2
     const cy = H / 2
     const proj = verts.map(([x, y, z]) => {
-      let x1 = x * cosY + z * sinY
-      let z1 = -x * sinY + z * cosY
-      let y1 = y * cosX - z1 * sinX
-      let z2 = y * sinX + z1 * cosX
+      const x1 = x * cosY + z * sinY
+      const z1 = -x * sinY + z * cosY
+      const y1 = y * cosX - z1 * sinX
+      const z2 = y * sinX + z1 * cosX
       const s = base * (1 + z2 * 0.08)
       return { x: cx + x1 * RADIUS * s, y: cy + y1 * RADIUS * s }
     })
