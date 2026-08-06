@@ -39,7 +39,14 @@ async function getAccessToken(): Promise<string> {
   return data.access_token
 }
 
-async function gcal(path: string, init: RequestInit = {}): Promise<any> {
+interface GcalResponse {
+  id?: string
+  htmlLink?: string
+  calendars?: Record<string, { busy?: { start: string; end: string }[] }>
+  [key: string]: unknown
+}
+
+async function gcal(path: string, init: RequestInit = {}): Promise<GcalResponse> {
   const token = await getAccessToken()
   const res = await fetch(`${CAL_BASE}${path}`, {
     ...init,
@@ -124,8 +131,9 @@ export async function createBooking(opts: {
     },
   }
 
-  return gcal(`/calendars/${encodeURIComponent(CALENDAR_ID)}/events`, {
+  const ev = await gcal(`/calendars/${encodeURIComponent(CALENDAR_ID)}/events`, {
     method: 'POST',
     body: JSON.stringify(event),
   })
+  return { id: ev.id || 'created', htmlLink: ev.htmlLink }
 }
