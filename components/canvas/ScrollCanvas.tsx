@@ -286,7 +286,7 @@ function init2DWorld(
   heroRef: React.RefObject<HTMLDivElement | null>,
   progressRef: React.MutableRefObject<number>,
 ): () => void {
-  const ctx = canvas.getContext('2d')
+  const ctx = canvas.getContext('2d')!
   if (!ctx) return () => {}
 
   // Icosaedro: 12 vértices normalizados (radio 1)
@@ -340,9 +340,6 @@ function init2DWorld(
     const cosX = Math.cos(rx), sinX = Math.sin(rx)
 
     const fade = 0.55 * (1 - smoothstep(0, 0.55, p))
-    if (fade <= 0.01) {
-      // igual: seguir con el fade del hero
-    }
     ctx.strokeStyle = `rgba(255,255,255,${Math.max(fade, 0.02).toFixed(3)})`
     ctx.lineWidth = 1
 
