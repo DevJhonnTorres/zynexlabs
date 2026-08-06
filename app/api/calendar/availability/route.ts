@@ -12,8 +12,9 @@ export async function GET(req: NextRequest) {
   try {
     const slots = await getFreeSlots(date)
     return NextResponse.json({ date, slots })
-  } catch (err: any) {
+  } catch (err) {
     console.error('availability error', err)
-    return NextResponse.json({ error: err.message || 'failed' }, { status: 500 })
+    const msg = err instanceof Error ? err.message : 'failed'
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }

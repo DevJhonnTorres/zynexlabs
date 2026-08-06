@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 const TZ = 'America/Bogota'
 const fmtTime = (iso: string) =>
@@ -35,8 +35,8 @@ export function CalendarBooking() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'failed')
       setSlots(data.slots || [])
-    } catch (e: any) {
-      setSlotsError(e.message || 'Error cargando disponibilidad')
+    } catch (e) {
+      setSlotsError(e instanceof Error ? e.message : 'Error cargando disponibilidad')
     } finally {
       setSlotsLoading(false)
     }
@@ -86,8 +86,8 @@ export function CalendarBooking() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Error reservando')
       setStep('done')
-    } catch (e: any) {
-      setError(e.message || 'Error reservando')
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Error reservando')
     } finally {
       setSubmitting(false)
     }

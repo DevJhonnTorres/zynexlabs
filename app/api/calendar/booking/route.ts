@@ -40,8 +40,9 @@ export async function POST(req: NextRequest) {
       eventId: event.id,
       htmlLink: event.htmlLink || null,
     })
-  } catch (err: any) {
+  } catch (err) {
     console.error('booking error', err)
-    return NextResponse.json({ error: err.message || 'failed' }, { status: 500 })
+    const msg = err instanceof Error ? err.message : 'failed'
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
