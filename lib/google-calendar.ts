@@ -89,7 +89,7 @@ export async function getFreeSlots(dateStr: string): Promise<string[]> {
     }),
   })
   const busy: { start: number; end: number }[] = (fb.calendars?.[CALENDAR_ID]?.busy || []).map(
-    (b: any) => ({ start: new Date(b.start).getTime(), end: new Date(b.end).getTime() })
+    (b) => ({ start: new Date(b.start).getTime(), end: new Date(b.end).getTime() })
   )
 
   // Generar slots de 30 min
