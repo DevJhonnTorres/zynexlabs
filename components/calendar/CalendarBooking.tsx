@@ -5,8 +5,10 @@ import { useCallback, useState } from 'react'
 const TZ = 'America/Bogota'
 const fmtTime = (iso: string) =>
   new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: TZ }).format(new Date(iso))
+// La fecha del día es la misma en cualquier zona — sin conversión de timezone.
+// (La conversión Bogotá→UTC la hace el servidor.)
 const fmtDay = (d: Date) =>
-  new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(d).slice(0, 10) // YYYY-MM-DD
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 
 type Step = 'date' | 'slot' | 'confirm' | 'done'
 
