@@ -75,8 +75,9 @@ export async function getFreeSlots(dateStr: string): Promise<string[]> {
   const dow = day.getUTCDay()
   if (!OFFICE.workdays.includes(dow)) return []
 
-  const startUtc = new Date(day.getTime() + OFFICE.startHour * 3600 * 1000 + bogotaOffsetMs())
-  const endUtc = new Date(day.getTime() + OFFICE.endHour * 3600 * 1000 + bogotaOffsetMs())
+  // Hora local Bogotá → UTC: utc = local − offset (offset = −5h → sumar 5h)
+  const startUtc = new Date(day.getTime() + OFFICE.startHour * 3600 * 1000 - bogotaOffsetMs())
+  const endUtc = new Date(day.getTime() + OFFICE.endHour * 3600 * 1000 - bogotaOffsetMs())
 
   // freebusy del día
   const fb = await gcal('/freeBusy', {
