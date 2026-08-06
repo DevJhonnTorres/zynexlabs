@@ -10,6 +10,7 @@ import { CALENDLY_URL } from '@/lib/constants'
 export function ScrollCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
+  const gradientRef = useRef<HTMLDivElement>(null)
   const progressRef = useRef(0)
 
   useEffect(() => {
@@ -21,12 +22,12 @@ export function ScrollCanvas() {
     // y el hero no se rompe — nunca error de cliente.
     let cleanup: (() => void) | undefined
     try {
-      cleanup = initScene(canvas, heroRef, progressRef)
+      cleanup = initScene(canvas, heroRef, gradientRef, progressRef)
     } catch (err) {
       // Sin WebGL: el mundo 2D (Canvas 2D) corre en CUALQUIER dispositivo —
       // esfera wireframe blanca rotando, misma estética que el 3D.
       console.warn('ScrollCanvas: WebGL no disponible, usando mundo 2D', err)
-      cleanup = init2DWorld(canvas, heroRef, progressRef)
+      cleanup = init2DWorld(canvas, heroRef, gradientRef, progressRef)
     }
     return () => {
       cleanup?.()
@@ -46,17 +47,22 @@ export function ScrollCanvas() {
           display: 'block',
           zIndex: 0,
           pointerEvents: 'none',
+          transition: 'opacity 200ms linear',
         }}
       />
 
       {/* Fixed gradient — left-side darkening for text legibility */}
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        pointerEvents: 'none',
-        zIndex: 1,
-        background: 'linear-gradient(108deg, rgba(4,4,10,0.75) 0%, rgba(4,4,10,0.3) 52%, transparent 100%)',
-      }} />
+      <div
+        ref={gradientRef}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          pointerEvents: 'none',
+          zIndex: 1,
+          transition: 'opacity 200ms linear',
+          background: 'linear-gradient(108deg, rgba(4,4,10,0.75) 0%, rgba(4,4,10,0.3) 52%, transparent 100%)',
+        }}
+      />
 
       {/* Fixed hero overlay — fades out as user scrolls */}
       <div
@@ -122,6 +128,7 @@ export function ScrollCanvas() {
 function initScene(
   canvas: HTMLCanvasElement,
   heroRef: React.RefObject<HTMLDivElement | null>,
+  gradientRef: React.RefObject<HTMLDivElement | null>,
   progressRef: React.MutableRefObject<number>,
 ): () => void {
   // ── Renderer ──
@@ -208,6 +215,10 @@ function initScene(
       heroRef.current.style.opacity = String(opacity)
       heroRef.current.style.pointerEvents = opacity < 0.08 ? 'none' : 'auto'
     }
+    // El mundo también se desvanece con el scroll (nunca visible al final)
+    const fade = 1 - smoothstep(0.3, 1, progressRef.current)
+    canvas.style.opacity = String(fade)
+    if (gradientRef.current) gradientRef.current.style.opacity = String(fade)
   }
   window.addEventListener('scroll', onScroll, { passive: true })
   onScroll()
@@ -285,6 +296,7 @@ function initScene(
 function init2DWorld(
   canvas: HTMLCanvasElement,
   heroRef: React.RefObject<HTMLDivElement | null>,
+  gradientRef: React.RefObject<HTMLDivElement | null>,
   progressRef: React.MutableRefObject<number>,
 ): () => void {
   const ctx = canvas.getContext('2d')!
@@ -371,6 +383,10 @@ function init2DWorld(
       heroRef.current.style.opacity = String(opacity)
       heroRef.current.style.pointerEvents = opacity < 0.08 ? 'none' : 'auto'
     }
+    // El mundo se desvanece con el scroll
+    const canvasFade = 1 - smoothstep(0.3, 1, p)
+    canvas.style.opacity = String(canvasFade)
+    if (gradientRef.current) gradientRef.current.style.opacity = String(canvasFade)
   }
   draw()
 
