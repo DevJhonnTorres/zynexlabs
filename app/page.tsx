@@ -13,7 +13,7 @@ export default function Home() {
       <div style={{ height: '100vh', position: 'relative', zIndex: 3 }} />
 
       {/* ── Services overview ── */}
-      <section className="px-12 py-24" style={{ background: 'var(--bg)', position: 'relative', zIndex: 3 }}>
+      <section className="px-6 md:px-12 py-16 md:py-24" style={{ background: 'var(--bg)', position: 'relative', zIndex: 3 }}>
         <div className="max-w-[1200px] mx-auto">
           <div className="font-mono text-[10px] tracking-[4px] text-[var(--label)] mb-4">01 · SERVICES</div>
           <div className="flex items-end justify-between mb-14">
@@ -29,7 +29,7 @@ export default function Home() {
           </div>
 
           {/* 5-column grid with 1px separators */}
-          <div className="grid grid-cols-5 gap-0 bg-[var(--border)]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-0 bg-[var(--border)]">
             {SERVICES.map((svc, i) => (
               <AnimatedSection key={svc.slug} delay={i * 0.07}>
                 <Link href={`/services#${svc.slug}`} className="no-underline block">
@@ -48,7 +48,7 @@ export default function Home() {
       </section>
 
       {/* ── Projects overview ── */}
-      <section className="px-12 py-24" style={{ background: 'var(--bg)', position: 'relative', zIndex: 3 }}>
+      <section className="px-6 md:px-12 py-16 md:py-24" style={{ background: 'var(--bg)', position: 'relative', zIndex: 3 }}>
         <div className="max-w-[1200px] mx-auto">
           <div className="font-mono text-[10px] tracking-[4px] text-[var(--label)] mb-4">02 · PROJECTS</div>
           <div className="flex items-end justify-between mb-14">
@@ -64,7 +64,7 @@ export default function Home() {
           </div>
 
           {/* 2-column grid with 1px separators */}
-          <div className="grid grid-cols-2 gap-0 bg-[var(--border)]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0 bg-[var(--border)]">
             {PROJECTS.slice(0, 2).map((p, i) => (
               <AnimatedSection key={p.hash} delay={i * 0.1}>
                 <Link href="/projects" className="no-underline block">
@@ -97,7 +97,7 @@ export default function Home() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="px-12 py-32 text-center" style={{ background: 'var(--bg)', position: 'relative', zIndex: 3 }}>
+      <section className="px-6 md:px-12 py-16 md:py-32 text-center" style={{ background: 'var(--bg)', position: 'relative', zIndex: 3 }}>
         <div className="max-w-[640px] mx-auto">
           <AnimatedSection>
             <div className="font-mono text-[9px] tracking-[4px] text-[var(--label)] mb-8 flex justify-center">
@@ -112,7 +112,7 @@ export default function Home() {
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 bg-white text-black font-bold text-[13px] tracking-[1px] px-12 py-4 hover:bg-[rgba(255,255,255,0.85)] transition-colors duration-200 no-underline"
+              className="inline-flex items-center gap-2 bg-white text-black font-bold text-[13px] tracking-[1px] px-8 md:px-12 py-4 hover:bg-[rgba(255,255,255,0.85)] transition-colors duration-200 no-underline"
             >
               Schedule a Free Discovery Call
             </Link>

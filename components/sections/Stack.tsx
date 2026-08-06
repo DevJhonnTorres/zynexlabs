@@ -3,7 +3,7 @@ import { STACK_GROUPS } from '@/lib/constants'
 
 export function Stack() {
   return (
-    <section id="stack" className="border-b border-[var(--border)] px-12 py-24">
+    <section id="stack" className="border-b border-[var(--border)] px-6 md:px-12 py-16 md:py-24">
       <div className="max-w-[1200px] mx-auto">
         <div className="font-mono text-[10px] tracking-[4px] text-[var(--label)] mb-4">03 · TECH STACK</div>
         <div className="flex items-end justify-between mb-14">
@@ -15,7 +15,7 @@ export function Stack() {
           </p>
         </div>
 
-        <div className="grid grid-cols-5 gap-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-10">
           {STACK_GROUPS.map((group, gi) => (
             <AnimatedSection key={group.title} delay={gi * 0.08}>
               <div>

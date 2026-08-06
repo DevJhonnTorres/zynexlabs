@@ -3,9 +3,9 @@ import { SERVICES } from '@/lib/constants'
 
 export function Services() {
   return (
-    <section id="services" className="border-b border-[var(--border)] px-12 py-24">
+    <section id="services" className="border-b border-[var(--border)] px-6 md:px-12 py-16 md:py-24">
       <div className="max-w-[1200px] mx-auto">
-        <div className="grid grid-cols-[1fr_2fr] gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 lg:gap-20 items-start">
           <div className="sticky top-24">
             <div className="font-mono text-[10px] tracking-[4px] text-[var(--label)] mb-4">01 · SERVICES</div>
             <h2 className="text-[clamp(28px,3vw,42px)] font-extrabold tracking-[-1.5px] leading-[1.1] mb-5">

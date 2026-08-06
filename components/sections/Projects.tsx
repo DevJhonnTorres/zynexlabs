@@ -3,7 +3,7 @@ import { PROJECTS } from '@/lib/constants'
 
 export function Projects() {
   return (
-    <section id="projects" className="border-b border-[var(--border)] px-12 py-24">
+    <section id="projects" className="border-b border-[var(--border)] px-6 md:px-12 py-16 md:py-24">
       <div className="max-w-[1200px] mx-auto">
         <div className="font-mono text-[10px] tracking-[4px] text-[var(--label)] mb-4">02 · PROJECTS</div>
         <div className="flex items-end justify-between mb-14">
@@ -15,7 +15,7 @@ export function Projects() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-0 bg-[var(--border)]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 bg-[var(--border)]">
           {PROJECTS.map((p, i) => (
             <AnimatedSection key={p.title} delay={i * 0.1}>
               <div className="bg-[var(--bg)] p-8 h-full group hover:bg-[var(--surface)] transition-colors duration-200 cursor-default">

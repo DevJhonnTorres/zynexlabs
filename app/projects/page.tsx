@@ -19,9 +19,9 @@ export default function ProjectsPage() {
       />
 
       {/* Stats bar */}
-      <section className="border-b border-[var(--border)] px-12 py-12">
+      <section className="border-b border-[var(--border)] px-6 md:px-12 py-10 md:py-12">
         <div className="max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { value: '4',    label: 'Projects Delivered' },
               { value: '2024', label: 'Year Founded' },
@@ -42,7 +42,7 @@ export default function ProjectsPage() {
       {PROJECTS.map((p, i) => (
         <section
           key={p.hash}
-          className={`border-b border-[var(--border)] px-12 py-20 ${
+          className={`border-b border-[var(--border)] px-6 md:px-12 py-10 md:py-20 ${
             i % 2 === 1 ? 'bg-[var(--surface)]' : ''
           }`}
         >

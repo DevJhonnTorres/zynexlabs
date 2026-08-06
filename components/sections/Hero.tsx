@@ -13,7 +13,7 @@ const STATS = [
 
 export function Hero() {
   return (
-    <section className="min-h-screen flex flex-col justify-between border-b border-[var(--border)] px-12 py-20">
+    <section className="min-h-screen flex flex-col justify-between border-b border-[var(--border)] px-6 md:px-12 py-10 md:py-20">
       <div className="max-w-[1200px] mx-auto w-full flex flex-col justify-between flex-1 gap-16">
 
         {/* Top: eyebrow + headline */}
@@ -77,7 +77,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.35 }}
-          className="grid grid-cols-4 gap-10 pt-10 border-t border-[var(--border)]"
+          className="grid grid-cols-2 md:grid-cols-4 gap-10 pt-10 border-t border-[var(--border)]"
         >
           {STATS.map(stat => (
             <div key={stat.label}>

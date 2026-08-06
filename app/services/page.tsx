@@ -22,12 +22,12 @@ export default function ServicesPage() {
         <section
           key={svc.slug}
           id={svc.slug}
-          className={`border-b border-[var(--border)] px-12 py-20 ${
+          className={`border-b border-[var(--border)] px-6 md:px-12 py-10 md:py-20 ${
             i % 2 === 1 ? 'bg-[var(--surface)]' : ''
           }`}
         >
           <div className="max-w-[1200px] mx-auto">
-            <div className="grid grid-cols-[1fr_1.5fr] gap-20 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-10 lg:gap-20 items-start">
               <div className="sticky top-24">
                 <div className="font-mono text-[10px] tracking-[3px] text-[var(--label)] mb-3">{svc.num}</div>
                 <h2 className="text-[clamp(26px,2.8vw,38px)] font-extrabold tracking-[-1.5px] leading-[1.1] mb-4">
@@ -75,13 +75,13 @@ export default function ServicesPage() {
       ))}
 
       {/* Methodology */}
-      <section className="border-b border-[var(--border)] px-12 py-24">
+      <section className="border-b border-[var(--border)] px-6 md:px-12 py-16 md:py-24">
         <div className="max-w-[1200px] mx-auto">
           <div className="font-mono text-[10px] tracking-[3px] text-[var(--label)] mb-4">METHODOLOGY</div>
           <h2 className="text-[clamp(28px,3vw,42px)] font-extrabold tracking-[-1.5px] leading-[1.1] mb-16">
             How We<br />Build
           </h2>
-          <div className="grid grid-cols-5 gap-6 relative">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 relative">
             <div className="absolute top-[10px] left-0 right-0 h-px bg-[var(--border)]" />
             {METHODOLOGY_STEPS.map((step, i) => (
               <AnimatedSection key={step.num} delay={i * 0.1} direction="up">
@@ -98,7 +98,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="px-12 py-24 text-center">
+      <section className="px-6 md:px-12 py-16 md:py-24 text-center">
         <div className="max-w-[560px] mx-auto">
           <AnimatedSection>
             <h2 className="text-[clamp(28px,3.5vw,48px)] font-black tracking-[-2px] leading-[1.05] mb-6">

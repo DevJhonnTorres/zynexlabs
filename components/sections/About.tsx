@@ -9,10 +9,10 @@ const VALUE_CARDS = [
 
 export function About() {
   return (
-    <section id="about" className="border-b border-[var(--border)] px-12 py-24">
+    <section id="about" className="border-b border-[var(--border)] px-6 md:px-12 py-16 md:py-24">
       <div className="max-w-[1200px] mx-auto">
         <div className="font-mono text-[10px] tracking-[4px] text-[var(--label)] mb-4">00 · ABOUT</div>
-        <div className="grid grid-cols-2 gap-20 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-start">
           <AnimatedSection direction="left">
             <h2 className="text-[clamp(28px,3vw,42px)] font-extrabold tracking-[-1.5px] leading-[1.1] mb-6">
               We Are<br />Zynex Labs
@@ -27,7 +27,7 @@ export function About() {
             </div>
           </AnimatedSection>
 
-          <div className="grid grid-cols-2 gap-0 bg-[var(--border)]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 bg-[var(--border)]">
             {VALUE_CARDS.map((card, i) => (
               <AnimatedSection key={card.title} delay={i * 0.08}>
                 <div className="bg-[var(--bg)] p-5 hover:bg-[var(--surface)] transition-all duration-300 cursor-default">

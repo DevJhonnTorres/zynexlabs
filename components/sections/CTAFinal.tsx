@@ -6,7 +6,7 @@ import { CALENDLY_URL } from '@/lib/constants'
 
 export function CTAFinal() {
   return (
-    <section className="px-12 py-32 text-center border-b border-[var(--border)]">
+    <section className="px-6 md:px-12 py-16 md:py-32 text-center border-b border-[var(--border)]">
       <div className="max-w-[700px] mx-auto">
         <AnimatedSection>
           <div className="font-mono text-[9px] tracking-[4px] text-[var(--label)] mb-8 flex justify-center">

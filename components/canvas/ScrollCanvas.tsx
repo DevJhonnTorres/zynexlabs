@@ -58,7 +58,7 @@ export function ScrollCanvas() {
       {/* Fixed hero overlay — fades out as user scrolls */}
       <div
         ref={heroRef}
-        className="fixed inset-0 flex flex-col justify-between px-12 py-20"
+        className="fixed inset-0 flex flex-col justify-between px-6 md:px-12 py-10 md:py-20"
         style={{ zIndex: 2, transition: 'opacity 200ms linear' }}
       >
         {/* Eyebrow */}
@@ -90,16 +90,16 @@ export function ScrollCanvas() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-[1200px] mx-auto w-full flex items-end justify-between"
+          className="max-w-[1200px] mx-auto w-full flex flex-col md:flex-row items-start md:items-end gap-8 md:gap-0 justify-between"
         >
-          <p className="text-[15px] text-[var(--muted)] leading-[1.75] max-w-[360px] m-0 opacity-60">
+          <p className="text-[15px] text-[var(--muted)] leading-[1.75] max-w-none md:max-w-[360px] m-0 opacity-60">
             AI · Web3 · Cloud · Software Development<br />
             Senior-led. Remote-first. Colombia.
           </p>
-          <div className="flex flex-col items-end gap-3">
+          <div className="flex flex-col items-start md:items-end gap-3">
             <button
               onClick={() => window.open(CALENDLY_URL, '_blank')}
-              className="bg-white text-black font-bold text-[12px] tracking-[2px] px-10 py-3.5 hover:bg-[rgba(255,255,255,0.85)] transition-colors cursor-pointer"
+              className="bg-white text-black font-bold text-[12px] tracking-[2px] px-8 md:px-10 py-3.5 hover:bg-[rgba(255,255,255,0.85)] transition-colors cursor-pointer"
             >
               START A PROJECT
             </button>
@@ -122,8 +122,9 @@ function initScene(
   progressRef: React.MutableRefObject<number>,
 ): () => void {
   // ── Renderer ──
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  const isMobile = window.innerWidth < 768
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile })
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2))
 
   // ── Scene / Camera ──
   const scene = new THREE.Scene()
