@@ -16,173 +16,23 @@ export function ScrollCanvas() {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    // ── WebGL guard: detectar soporte en un canvas APARTE (nunca tocar el
-    //    real antes del renderer, eso rompe la inicialización del 3D).
-    //    Si no hay WebGL (PC viejo, GPU bloqueada), el hero usa fondo estático. ──
-    const probe = document.createElement('canvas')
-    const probeGL = probe.getContext('webgl2') || probe.getContext('webgl')
-    if (!probeGL) return
-    probeGL.getExtension('WEBGL_lose_context')?.loseContext()
-
-    // ── Renderer ──
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-    // ── Scene / Camera ──
-    const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100)
-    camera.position.z = 5
-
-    // ── Sphere wireframe — fades out as blockchain forms ──
-    const sphereGeo = new THREE.IcosahedronGeometry(1.5, 4)
-    const originalPositions = new Float32Array(sphereGeo.attributes.position.array)
-    const sphereMat = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.55,
-    })
-    const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat)
-    scene.add(sphereMesh)
-
-    // ── Blockchain target: each vertex expanded 2.5x outward ──
-    const BC_SCALE = 2.5
-    const targetPositions = new Float32Array(originalPositions.length)
-    for (let i = 0; i < originalPositions.length; i++) {
-      targetPositions[i] = originalPositions[i] * BC_SCALE
+    // El 3D corre siempre que el dispositivo pueda crear el renderer real.
+    // Si falla (sin WebGL / GPU bloqueada), la página sigue con fondo estático
+    // y el hero no se rompe — nunca error de cliente.
+    let cleanup: (() => void) | undefined
+    try {
+      cleanup = initScene(canvas, heroRef, progressRef)
+    } catch (err) {
+      console.warn('ScrollCanvas: WebGL no disponible, fondo estático', err)
     }
-
-    // ── Blockchain nodes (Points) — materialize as sphere expands ──
-    const nodeGeo = new THREE.BufferGeometry()
-    const nodeBuf = new Float32Array(originalPositions.length)
-    nodeGeo.setAttribute('position', new THREE.BufferAttribute(nodeBuf, 3))
-    const nodeMat = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 0.055,
-      transparent: true,
-      opacity: 0,
-    })
-    const nodePoints = new THREE.Points(nodeGeo, nodeMat)
-    scene.add(nodePoints)
-
-    // ── Blockchain connections (LineSegments) ──
-    const n = targetPositions.length / 3
-    const pairs: [number, number][] = []
-    const MIN_D2 = 0.09
-    const MAX_D2 = 3.24  // 1.8² — nearest neighbors at 2.5x scale
-    for (let i = 0; i < n; i++) {
-      for (let j = i + 1; j < n; j++) {
-        const dx = targetPositions[j * 3]     - targetPositions[i * 3]
-        const dy = targetPositions[j * 3 + 1] - targetPositions[i * 3 + 1]
-        const dz = targetPositions[j * 3 + 2] - targetPositions[i * 3 + 2]
-        const d2 = dx * dx + dy * dy + dz * dz
-        if (d2 > MIN_D2 && d2 < MAX_D2) pairs.push([i, j])
-      }
-    }
-    const lineBuf = new Float32Array(pairs.length * 6)
-    const lineGeo = new THREE.BufferGeometry()
-    lineGeo.setAttribute('position', new THREE.BufferAttribute(lineBuf, 3))
-    const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 })
-    const blockchainLines = new THREE.LineSegments(lineGeo, lineMat)
-    scene.add(blockchainLines)
-
-    // ── Resize ──
-    function onResize() {
-      const W = window.innerWidth
-      const H = window.innerHeight
-      renderer.setSize(W, H)
-      camera.aspect = W / H
-      camera.updateProjectionMatrix()
-    }
-    window.addEventListener('resize', onResize)
-    onResize()
-
-    // ── Scroll: progress based on first 3 viewport heights ──
-    function onScroll() {
-      progressRef.current = Math.max(0, Math.min(1, window.scrollY / (window.innerHeight * 3)))
-
-      if (heroRef.current) {
-        const opacity = 1 - smoothstep(0.05, 0.38, progressRef.current)
-        heroRef.current.style.opacity = String(opacity)
-        heroRef.current.style.pointerEvents = opacity < 0.08 ? 'none' : 'auto'
-      }
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-
-    // ── Animation loop ──
-    let animId: number
-    let t = 0
-
-    function animate() {
-      animId = requestAnimationFrame(animate)
-      t += 0.011
-      const p = progressRef.current
-
-      // Sphere: organic noise morphing, fades out
-      sphereMat.opacity = 0.55 * (1 - smoothstep(0, 0.55, p))
-      const noiseDecay = 1 - smoothstep(0.1, 0.5, p)
-      const sPos = sphereGeo.attributes.position.array as Float32Array
-      for (let i = 0; i < sPos.length; i += 3) {
-        const ox = originalPositions[i], oy = originalPositions[i + 1], oz = originalPositions[i + 2]
-        const len = Math.sqrt(ox * ox + oy * oy + oz * oz)
-        const noise =
-          Math.sin(ox * 3 + t * 0.7) *
-          Math.cos(oy * 3 + t * 0.5) *
-          Math.sin(oz * 2 + t * 0.9)
-        const disp = noise * p * 0.55 * noiseDecay
-        sPos[i]     = ox + (ox / len) * disp
-        sPos[i + 1] = oy + (oy / len) * disp
-        sPos[i + 2] = oz + (oz / len) * disp
-      }
-      sphereGeo.attributes.position.needsUpdate = true
-
-      // Blockchain nodes: lerp from sphere toward expanded positions, fade in
-      nodeMat.opacity = 0.85 * smoothstep(0.2, 0.7, p)
-      const nPos = nodeGeo.attributes.position.array as Float32Array
-      for (let i = 0; i < nPos.length; i += 3) {
-        const ox = originalPositions[i], oy = originalPositions[i + 1], oz = originalPositions[i + 2]
-        nPos[i]     = ox + (targetPositions[i]     - ox) * p
-        nPos[i + 1] = oy + (targetPositions[i + 1] - oy) * p
-        nPos[i + 2] = oz + (targetPositions[i + 2] - oz) * p
-      }
-      nodeGeo.attributes.position.needsUpdate = true
-
-      // Blockchain connections: follow nodes, crystallize late
-      lineMat.opacity = 0.22 * smoothstep(0.5, 0.92, p)
-      for (let k = 0; k < pairs.length; k++) {
-        const ai = pairs[k][0], bi = pairs[k][1]
-        lineBuf[k * 6]     = nPos[ai * 3];     lineBuf[k * 6 + 1] = nPos[ai * 3 + 1]; lineBuf[k * 6 + 2] = nPos[ai * 3 + 2]
-        lineBuf[k * 6 + 3] = nPos[bi * 3];     lineBuf[k * 6 + 4] = nPos[bi * 3 + 1]; lineBuf[k * 6 + 5] = nPos[bi * 3 + 2]
-      }
-      lineGeo.attributes.position.needsUpdate = true
-
-      // Rotation slows as blockchain crystallizes
-      const rot = t * (1 - smoothstep(0.6, 1, p) * 0.6)
-      sphereMesh.rotation.x  = nodePoints.rotation.x  = blockchainLines.rotation.x  = rot * 0.07
-      sphereMesh.rotation.y  = nodePoints.rotation.y  = blockchainLines.rotation.y  = rot * 0.11
-
-      renderer.render(scene, camera)
-    }
-    animate()
-
     return () => {
-      cancelAnimationFrame(animId)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onResize)
-      renderer.dispose()
-      sphereGeo.dispose(); sphereMat.dispose()
-      nodeGeo.dispose(); nodeMat.dispose()
-      lineGeo.dispose(); lineMat.dispose()
+      cleanup?.()
     }
   }, [])
 
   return (
     <>
-      {/* Fixed canvas — background of the entire page.
-          Sin WebGL el canvas queda vacío: el gradiente CSS de fondo se ve
-          (fallback visual para dispositivos sin soporte 3D). Con WebGL,
-          el renderer (alpha) se superpone sobre el gradiente. */}
+      {/* Fixed canvas — background of the entire page */}
       <canvas
         ref={canvasRef}
         style={{
@@ -193,7 +43,6 @@ export function ScrollCanvas() {
           display: 'block',
           zIndex: 0,
           pointerEvents: 'none',
-          background: 'radial-gradient(1100px 750px at 75% 15%, rgba(124,92,246,0.16), transparent 60%), radial-gradient(900px 650px at 15% 85%, rgba(56,130,246,0.12), transparent 55%), #04040a',
         }}
       />
 
@@ -265,4 +114,162 @@ export function ScrollCanvas() {
       </div>
     </>
   )
+}
+
+function initScene(
+  canvas: HTMLCanvasElement,
+  heroRef: React.RefObject<HTMLDivElement | null>,
+  progressRef: React.MutableRefObject<number>,
+): () => void {
+  // ── Renderer ──
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+  // ── Scene / Camera ──
+  const scene = new THREE.Scene()
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100)
+  camera.position.z = 5
+
+  // ── Sphere wireframe — fades out as blockchain forms ──
+  const sphereGeo = new THREE.IcosahedronGeometry(1.5, 4)
+  const originalPositions = new Float32Array(sphereGeo.attributes.position.array)
+  const sphereMat = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.55,
+  })
+  const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat)
+  scene.add(sphereMesh)
+
+  // ── Blockchain target: each vertex expanded 2.5x outward ──
+  const BC_SCALE = 2.5
+  const targetPositions = new Float32Array(originalPositions.length)
+  for (let i = 0; i < originalPositions.length; i++) {
+    targetPositions[i] = originalPositions[i] * BC_SCALE
+  }
+
+  // ── Blockchain nodes (Points) — materialize as sphere expands ──
+  const nodeGeo = new THREE.BufferGeometry()
+  const nodeBuf = new Float32Array(originalPositions.length)
+  nodeGeo.setAttribute('position', new THREE.BufferAttribute(nodeBuf, 3))
+  const nodeMat = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.055,
+    transparent: true,
+    opacity: 0,
+  })
+  const nodePoints = new THREE.Points(nodeGeo, nodeMat)
+  scene.add(nodePoints)
+
+  // ── Blockchain connections (LineSegments) ──
+  const n = targetPositions.length / 3
+  const pairs: [number, number][] = []
+  const MIN_D2 = 0.09
+  const MAX_D2 = 3.24  // 1.8² — nearest neighbors at 2.5x scale
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      const dx = targetPositions[j * 3]     - targetPositions[i * 3]
+      const dy = targetPositions[j * 3 + 1] - targetPositions[i * 3 + 1]
+      const dz = targetPositions[j * 3 + 2] - targetPositions[i * 3 + 2]
+      const d2 = dx * dx + dy * dy + dz * dz
+      if (d2 > MIN_D2 && d2 < MAX_D2) pairs.push([i, j])
+    }
+  }
+  const lineBuf = new Float32Array(pairs.length * 6)
+  const lineGeo = new THREE.BufferGeometry()
+  lineGeo.setAttribute('position', new THREE.BufferAttribute(lineBuf, 3))
+  const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 })
+  const blockchainLines = new THREE.LineSegments(lineGeo, lineMat)
+  scene.add(blockchainLines)
+
+  // ── Resize ──
+  function onResize() {
+    const W = window.innerWidth
+    const H = window.innerHeight
+    renderer.setSize(W, H)
+    camera.aspect = W / H
+    camera.updateProjectionMatrix()
+  }
+  window.addEventListener('resize', onResize)
+  onResize()
+
+  // ── Scroll: progress based on first 3 viewport heights ──
+  function onScroll() {
+    progressRef.current = Math.max(0, Math.min(1, window.scrollY / (window.innerHeight * 3)))
+
+    if (heroRef.current) {
+      const opacity = 1 - smoothstep(0.05, 0.38, progressRef.current)
+      heroRef.current.style.opacity = String(opacity)
+      heroRef.current.style.pointerEvents = opacity < 0.08 ? 'none' : 'auto'
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true })
+  onScroll()
+
+  // ── Animation loop ──
+  let animId: number
+  let t = 0
+
+  function animate() {
+    animId = requestAnimationFrame(animate)
+    t += 0.011
+    const p = progressRef.current
+
+    // Sphere: organic noise morphing, fades out
+    sphereMat.opacity = 0.55 * (1 - smoothstep(0, 0.55, p))
+    const noiseDecay = 1 - smoothstep(0.1, 0.5, p)
+    const sPos = sphereGeo.attributes.position.array as Float32Array
+    for (let i = 0; i < sPos.length; i += 3) {
+      const ox = originalPositions[i], oy = originalPositions[i + 1], oz = originalPositions[i + 2]
+      const len = Math.sqrt(ox * ox + oy * oy + oz * oz)
+      const noise =
+        Math.sin(ox * 3 + t * 0.7) *
+        Math.cos(oy * 3 + t * 0.5) *
+        Math.sin(oz * 2 + t * 0.9)
+      const disp = noise * p * 0.55 * noiseDecay
+      sPos[i]     = ox + (ox / len) * disp
+      sPos[i + 1] = oy + (oy / len) * disp
+      sPos[i + 2] = oz + (oz / len) * disp
+    }
+    sphereGeo.attributes.position.needsUpdate = true
+
+    // Blockchain nodes: lerp from sphere toward expanded positions, fade in
+    nodeMat.opacity = 0.85 * smoothstep(0.2, 0.7, p)
+    const nPos = nodeGeo.attributes.position.array as Float32Array
+    for (let i = 0; i < nPos.length; i += 3) {
+      const ox = originalPositions[i], oy = originalPositions[i + 1], oz = originalPositions[i + 2]
+      nPos[i]     = ox + (targetPositions[i]     - ox) * p
+      nPos[i + 1] = oy + (targetPositions[i + 1] - oy) * p
+      nPos[i + 2] = oz + (targetPositions[i + 2] - oz) * p
+    }
+    nodeGeo.attributes.position.needsUpdate = true
+
+    // Blockchain connections: follow nodes, crystallize late
+    lineMat.opacity = 0.22 * smoothstep(0.5, 0.92, p)
+    for (let k = 0; k < pairs.length; k++) {
+      const ai = pairs[k][0], bi = pairs[k][1]
+      lineBuf[k * 6]     = nPos[ai * 3];     lineBuf[k * 6 + 1] = nPos[ai * 3 + 1]; lineBuf[k * 6 + 2] = nPos[ai * 3 + 2]
+      lineBuf[k * 6 + 3] = nPos[bi * 3];     lineBuf[k * 6 + 4] = nPos[bi * 3 + 1]; lineBuf[k * 6 + 5] = nPos[bi * 3 + 2]
+    }
+    lineGeo.attributes.position.needsUpdate = true
+
+    // Rotation slows as blockchain crystallizes
+    const rot = t * (1 - smoothstep(0.6, 1, p) * 0.6)
+    sphereMesh.rotation.x  = nodePoints.rotation.x  = blockchainLines.rotation.x  = rot * 0.07
+    sphereMesh.rotation.y  = nodePoints.rotation.y  = blockchainLines.rotation.y  = rot * 0.11
+
+    renderer.render(scene, camera)
+  }
+  animate()
+
+  return () => {
+    cancelAnimationFrame(animId)
+    window.removeEventListener('scroll', onScroll)
+    window.removeEventListener('resize', onResize)
+    renderer.dispose()
+    sphereGeo.dispose(); sphereMat.dispose()
+    nodeGeo.dispose(); nodeMat.dispose()
+    lineGeo.dispose(); lineMat.dispose()
+  }
 }
