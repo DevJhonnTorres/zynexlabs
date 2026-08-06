@@ -16,6 +16,18 @@ export function ScrollCanvas() {
     const canvas = canvasRef.current
     if (!canvas) return
 
+    // ── WebGL guard: si el dispositivo no soporta WebGL (PC viejo, GPU
+    //    bloqueada, móvil en ahorro de batería), el hero usa el fondo
+    //    estático en vez de reventar la app con un error de cliente ──
+    const probe = document.createElement('canvas')
+    if (!(probe.getContext('webgl2') || probe.getContext('webgl'))) return
+    try {
+      const probeRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
+      probeRenderer.dispose()
+    } catch {
+      return
+    }
+
     // ── Renderer ──
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
