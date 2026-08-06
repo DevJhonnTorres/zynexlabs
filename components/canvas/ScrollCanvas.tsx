@@ -338,6 +338,13 @@ function init2DWorld(
   window.addEventListener('resize', resize)
   resize()
 
+  // Progress del scroll (igual que el 3D) — necesario para el fade
+  function onScroll() {
+    progressRef.current = Math.max(0, Math.min(1, window.scrollY / (window.innerHeight * 3)))
+  }
+  window.addEventListener('scroll', onScroll, { passive: true })
+  onScroll()
+
   function draw() {
     animId = requestAnimationFrame(draw)
     t += 0.011
@@ -393,5 +400,6 @@ function init2DWorld(
   return () => {
     cancelAnimationFrame(animId)
     window.removeEventListener('resize', resize)
+    window.removeEventListener('scroll', onScroll)
   }
 }
