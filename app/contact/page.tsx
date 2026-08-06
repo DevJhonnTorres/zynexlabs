@@ -2,7 +2,8 @@
 
 import { AnimatedSection } from '@/components/ui/AnimatedSection'
 import { PageHeader } from '@/components/layout/PageHeader'
-import { COMPANY, CALENDLY_URL, FAQ } from '@/lib/constants'
+import { COMPANY, FAQ } from '@/lib/constants'
+import { CalendarBooking } from '@/components/calendar/CalendarBooking'
 
 export default function ContactPage() {
   return (
@@ -13,9 +14,9 @@ export default function ContactPage() {
         subtitle="Free 30-minute discovery call. We understand your challenge and tell you honestly whether we are the right fit."
       />
 
-      <section className="border-b border-[var(--border)] px-12 py-20">
+      <section className="border-b border-[var(--border)] px-6 md:px-12 py-10 md:py-20">
         <div className="max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-[1.2fr_1fr] gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-20 items-start">
             <AnimatedSection direction="left">
               <div className="font-mono text-[10px] tracking-[3px] text-[var(--label)] mb-4">THE CALL</div>
               <h2 className="text-[clamp(26px,2.8vw,38px)] font-extrabold tracking-[-1.5px] leading-[1.1] mb-6">What to Expect</h2>
@@ -44,12 +45,9 @@ export default function ContactPage() {
               <div className="border border-[var(--border)] p-8 mb-4">
                 <div className="font-mono text-[9px] tracking-[3px] text-[var(--label)] mb-4">DISCOVERY CALL</div>
                 <p className="text-[14px] text-[var(--dim)] leading-[1.75] mb-6 opacity-70">30 minutes. Free. No commitment required.</p>
-                <button
-                  onClick={() => window.open(CALENDLY_URL, '_blank')}
-                  className="w-full bg-white text-black font-bold text-[14px] py-4 hover:bg-[rgba(255,255,255,0.85)] transition-colors cursor-pointer"
-                >
-                  Book a Free Call via Calendly
-                </button>
+                <div className="w-full">
+                  <CalendarBooking />
+                </div>
                 <div className="mt-4 font-mono text-[9px] text-[var(--dim)] tracking-[2px] text-center">FREE 30-MIN · NO COMMITMENT</div>
               </div>
               <div className="border border-[var(--border)] p-8">
@@ -73,10 +71,10 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="border-b border-[var(--border)] px-12 py-20">
+      <section className="border-b border-[var(--border)] px-6 md:px-12 py-10 md:py-20">
         <div className="max-w-[1200px] mx-auto">
           <div className="font-mono text-[10px] tracking-[3px] text-[var(--label)] mb-4">FAQ</div>
-          <div className="grid grid-cols-[1fr_2fr] gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 lg:gap-20 items-start">
             <div className="sticky top-24">
               <h2 className="text-[clamp(26px,2.8vw,38px)] font-extrabold tracking-[-1.5px] leading-[1.1] mb-4">Frequently<br />Asked</h2>
             </div>
@@ -97,7 +95,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="px-12 py-24 text-center">
+      <section className="px-6 md:px-12 py-16 md:py-24 text-center">
         <div className="max-w-[520px] mx-auto">
           <AnimatedSection>
             <h2 className="text-[clamp(28px,3.5vw,48px)] font-black tracking-[-2px] leading-[1.05] mb-6">Build something that lasts.</h2>
