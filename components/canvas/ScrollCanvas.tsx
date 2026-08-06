@@ -179,7 +179,10 @@ export function ScrollCanvas() {
 
   return (
     <>
-      {/* Fixed canvas — background of the entire page */}
+      {/* Fixed canvas — background of the entire page.
+          Sin WebGL el canvas queda vacío: el gradiente CSS de fondo se ve
+          (fallback visual para dispositivos sin soporte 3D). Con WebGL,
+          el renderer (alpha) se superpone sobre el gradiente. */}
       <canvas
         ref={canvasRef}
         style={{
@@ -190,6 +193,7 @@ export function ScrollCanvas() {
           display: 'block',
           zIndex: 0,
           pointerEvents: 'none',
+          background: 'radial-gradient(1100px 750px at 75% 15%, rgba(124,92,246,0.16), transparent 60%), radial-gradient(900px 650px at 15% 85%, rgba(56,130,246,0.12), transparent 55%), #04040a',
         }}
       />
 
