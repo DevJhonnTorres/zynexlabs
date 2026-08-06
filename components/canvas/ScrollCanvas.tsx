@@ -16,17 +16,13 @@ export function ScrollCanvas() {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    // ── WebGL guard: si el dispositivo no soporta WebGL (PC viejo, GPU
-    //    bloqueada, móvil en ahorro de batería), el hero usa el fondo
-    //    estático en vez de reventar la app con un error de cliente ──
+    // ── WebGL guard: detectar soporte en un canvas APARTE (nunca tocar el
+    //    real antes del renderer, eso rompe la inicialización del 3D).
+    //    Si no hay WebGL (PC viejo, GPU bloqueada), el hero usa fondo estático. ──
     const probe = document.createElement('canvas')
-    if (!(probe.getContext('webgl2') || probe.getContext('webgl'))) return
-    try {
-      const probeRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
-      probeRenderer.dispose()
-    } catch {
-      return
-    }
+    const probeGL = probe.getContext('webgl2') || probe.getContext('webgl')
+    if (!probeGL) return
+    probeGL.getExtension('WEBGL_lose_context')?.loseContext()
 
     // ── Renderer ──
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
