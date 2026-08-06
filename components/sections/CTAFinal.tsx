@@ -12,8 +12,8 @@ export function CTAFinal() {
             {'// READY TO BUILD'}
           </div>
           <h2 className="text-[clamp(36px,5.5vw,76px)] font-black tracking-[-3px] leading-[1.0] mb-8">
-            Transform your vision<br />into{' '}
-            <span className="text-[var(--dim)]">digital infrastructure</span>
+            Where trust<br />is{' '}
+            <span className="text-[var(--dim)]">engineered.</span>
           </h2>
           <p className="text-[16px] text-[var(--muted)] leading-[1.75] mb-10 max-w-[460px] mx-auto opacity-50">
             Let&apos;s talk about your project. Free 30-minute discovery call, no commitment required.

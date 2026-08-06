@@ -88,9 +88,8 @@ export function ScrollCanvas() {
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="text-[clamp(56px,8vw,110px)] font-black leading-[0.93] tracking-[-4px] text-white"
           >
-            We Build<br />
-            Infrastructure<br />
-            <span className="text-[var(--dim)]">That Lasts.</span>
+            Trust,<br />
+            <span className="text-[var(--dim)]">Engineered.</span>
           </motion.h1>
         </div>
 
