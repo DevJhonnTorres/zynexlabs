@@ -101,13 +101,12 @@ export async function getFreeSlots(dateStr: string): Promise<string[]> {
 
 // Crear el evento en el calendario con recordatorios por email.
 export async function createBooking(opts: {
-  date: string
   slotIso: string
   name: string
   email: string
   message?: string
 }): Promise<any> {
-  const { date, slotIso, name, email, message } = opts
+  const { slotIso, name, email, message } = opts
   const start = new Date(slotIso)
   const end = new Date(start.getTime() + OFFICE.slotMinutes * 60 * 1000)
 
