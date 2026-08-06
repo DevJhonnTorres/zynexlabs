@@ -23,7 +23,10 @@ export function ScrollCanvas() {
     try {
       cleanup = initScene(canvas, heroRef, progressRef)
     } catch (err) {
-      console.warn('ScrollCanvas: WebGL no disponible, fondo estático', err)
+      // Sin WebGL: el mundo 2D (Canvas 2D) corre en CUALQUIER dispositivo —
+      // esfera wireframe blanca rotando, misma estética que el 3D.
+      console.warn('ScrollCanvas: WebGL no disponible, usando mundo 2D', err)
+      cleanup = init2DWorld(canvas, heroRef, progressRef)
     }
     return () => {
       cleanup?.()
@@ -272,5 +275,108 @@ function initScene(
     sphereGeo.dispose(); sphereMat.dispose()
     nodeGeo.dispose(); nodeMat.dispose()
     lineGeo.dispose(); lineMat.dispose()
+  }
+}
+
+// ── Mundo 2D de respaldo ──
+// Esfera wireframe blanca rotando, dibujada con Canvas 2D (proyección manual).
+// Corre en CUALQUIER dispositivo, con o sin WebGL — misma estética que el 3D.
+function init2DWorld(
+  canvas: HTMLCanvasElement,
+  heroRef: React.RefObject<HTMLDivElement | null>,
+  progressRef: React.MutableRefObject<number>,
+): () => void {
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return () => {}
+
+  // Icosaedro: 12 vértices normalizados (radio 1)
+  const phi = (1 + Math.sqrt(5)) / 2
+  const raw: [number, number, number][] = [
+    [0, 1, phi], [0, -1, phi], [0, 1, -phi], [0, -1, -phi],
+    [1, phi, 0], [-1, phi, 0], [1, -phi, 0], [-1, -phi, 0],
+    [phi, 0, 1], [-phi, 0, 1], [phi, 0, -1], [-phi, 0, -1],
+  ]
+  const verts = raw.map(([x, y, z]) => {
+    const len = Math.sqrt(x * x + y * y + z * z)
+    return [x / len, y / len, z / len] as [number, number, number]
+  })
+  // Aristas del icosaedro unitario (longitud ≈ 1.051)
+  const edges: [number, number][] = []
+  for (let i = 0; i < verts.length; i++) {
+    for (let j = i + 1; j < verts.length; j++) {
+      const dx = verts[i][0] - verts[j][0]
+      const dy = verts[i][1] - verts[j][1]
+      const dz = verts[i][2] - verts[j][2]
+      const d = Math.sqrt(dx * dx + dy * dy + dz * dz)
+      if (d > 1.0 && d < 1.12) edges.push([i, j])
+    }
+  }
+
+  const RADIUS = 1.5
+  let animId = 0
+  let t = 0
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    canvas.width = window.innerWidth * dpr
+    canvas.height = window.innerHeight * dpr
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  }
+  window.addEventListener('resize', resize)
+  resize()
+
+  function draw() {
+    animId = requestAnimationFrame(draw)
+    t += 0.011
+    const p = progressRef.current
+    const W = window.innerWidth
+    const H = window.innerHeight
+    ctx.clearRect(0, 0, W, H)
+
+    // Rotación: eje Y lento + eje X
+    const ry = t * 0.11
+    const rx = t * 0.07
+    const cosY = Math.cos(ry), sinY = Math.sin(ry)
+    const cosX = Math.cos(rx), sinX = Math.sin(rx)
+
+    const fade = 0.55 * (1 - smoothstep(0, 0.55, p))
+    if (fade <= 0.01) {
+      // igual: seguir con el fade del hero
+    }
+    ctx.strokeStyle = `rgba(255,255,255,${Math.max(fade, 0.02).toFixed(3)})`
+    ctx.lineWidth = 1
+
+    // Proyección perspectiva simple
+    const base = Math.min(W, H) * 0.32 / RADIUS
+    const cx = W / 2
+    const cy = H / 2
+    const proj = verts.map(([x, y, z]) => {
+      let x1 = x * cosY + z * sinY
+      let z1 = -x * sinY + z * cosY
+      let y1 = y * cosX - z1 * sinX
+      let z2 = y * sinX + z1 * cosX
+      const s = base * (1 + z2 * 0.08)
+      return { x: cx + x1 * RADIUS * s, y: cy + y1 * RADIUS * s }
+    })
+
+    ctx.beginPath()
+    for (const [a, b] of edges) {
+      ctx.moveTo(proj[a].x, proj[a].y)
+      ctx.lineTo(proj[b].x, proj[b].y)
+    }
+    ctx.stroke()
+
+    // Fade del hero con el scroll (igual que el 3D)
+    if (heroRef.current) {
+      const opacity = 1 - smoothstep(0.05, 0.38, p)
+      heroRef.current.style.opacity = String(opacity)
+      heroRef.current.style.pointerEvents = opacity < 0.08 ? 'none' : 'auto'
+    }
+  }
+  draw()
+
+  return () => {
+    cancelAnimationFrame(animId)
+    window.removeEventListener('resize', resize)
   }
 }

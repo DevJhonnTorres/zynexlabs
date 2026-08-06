@@ -3,9 +3,9 @@ import { COMPANY, NAV_LINKS } from '@/lib/constants'
 
 export function Footer() {
   return (
-    <footer className="border-t border-[var(--border)] px-12 py-16">
+    <footer className="border-t border-[var(--border)] px-6 md:px-12 py-16">
       <div className="max-w-[1200px] mx-auto">
-        <div className="grid grid-cols-[2fr_1fr_1fr_1fr] gap-12 mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-8 lg:gap-12 mb-14">
           {/* Brand */}
           <div>
             <div className="text-[13px] font-bold tracking-[4px] uppercase text-white mb-5">

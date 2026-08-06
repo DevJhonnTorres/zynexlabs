@@ -23,7 +23,7 @@ export function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-[1200px] mx-auto px-12 h-16 flex items-center justify-between">
+      <div className="max-w-[1200px] mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="no-underline">
           <span className="text-[13px] font-bold tracking-[4px] uppercase text-white hover:text-[var(--muted)] transition-colors duration-200">
@@ -32,7 +32,7 @@ export function Navbar() {
         </Link>
 
         {/* Nav links */}
-        <nav className="flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map(link => {
             const active = pathname === link.href
             return (
