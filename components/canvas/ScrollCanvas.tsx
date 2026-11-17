@@ -1,11 +1,11 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import Link from 'next/link'
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
 import { smoothstep } from '@/lib/scroll-utils'
-import { CALENDLY_URL } from '@/lib/constants'
+import { APPS } from '@/lib/constants'
+import { Button } from '@/components/ui/Button'
 
 export function ScrollCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -60,64 +60,75 @@ export function ScrollCanvas() {
           pointerEvents: 'none',
           zIndex: 1,
           transition: 'opacity 200ms linear',
-          background: 'linear-gradient(108deg, rgba(4,4,10,0.75) 0%, rgba(4,4,10,0.3) 52%, transparent 100%)',
+          background: 'linear-gradient(108deg, rgba(7,7,10,0.8) 0%, rgba(7,7,10,0.35) 52%, transparent 100%)',
         }}
       />
 
       {/* Fixed hero overlay — fades out as user scrolls */}
       <div
         ref={heroRef}
-        className="fixed inset-0 flex flex-col justify-between px-6 md:px-12 py-10 md:py-20"
+        className="fixed inset-0 flex flex-col justify-between overflow-y-auto px-5 pb-8 pt-24 md:px-12 md:pb-12 md:pt-28"
         style={{ zIndex: 2, transition: 'opacity 200ms linear' }}
       >
-        {/* Eyebrow */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="font-mono text-[9px] tracking-[5px] text-[var(--label)] uppercase max-w-[1200px] mx-auto w-full"
-        >
-          DIGITAL ENGINEERING STUDIO · COLOMBIA → WORLD
-        </motion.div>
+        <div className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-[rgba(255,106,0,0.35)] bg-[var(--accent-soft)] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[1.5px] text-accent-2 md:text-[12px]"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
+            Digital engineering studio · Colombia → World
+          </motion.div>
 
-        {/* Headline */}
-        <div className="max-w-[1200px] mx-auto w-full">
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[clamp(56px,8vw,110px)] font-black leading-[0.93] tracking-[-4px] text-white"
+            className="text-[clamp(48px,9vw,120px)] font-black leading-[0.95] tracking-[-0.04em] text-white"
           >
             Trust,<br />
-            <span className="text-[var(--dim)]">Engineered.</span>
+            <span className="text-gradient-accent">Engineered.</span>
           </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-6 max-w-[520px] text-[16px] leading-[1.7] text-[var(--muted)] md:text-[18px]"
+          >
+            AI, Web3, cloud and custom software. Senior-led, remote-first, and already running in production.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-8 flex flex-col gap-3 sm:flex-row"
+          >
+            <Button href="/contact" size="lg">Book a free call</Button>
+            <Button href="/apps" variant="secondary" size="lg">See live apps</Button>
+          </motion.div>
         </div>
 
-        {/* Subtext + CTAs */}
+        {/* Stats row */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-[1200px] mx-auto w-full flex flex-col md:flex-row items-start md:items-end gap-8 md:gap-0 justify-between"
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mx-auto mt-8 grid w-full max-w-[1200px] grid-cols-2 gap-x-6 gap-y-4 border-t border-[var(--border)] pt-6 md:grid-cols-4"
         >
-          <p className="text-[15px] text-[var(--muted)] leading-[1.75] max-w-none md:max-w-[360px] m-0 opacity-60">
-            AI · Web3 · Cloud · Software Development<br />
-            Senior-led. Remote-first. Colombia.
-          </p>
-          <div className="flex flex-col items-start md:items-end gap-3">
-            <button
-              onClick={() => window.open(CALENDLY_URL, '_blank')}
-              className="bg-white text-black font-bold text-[12px] tracking-[2px] px-8 md:px-10 py-3.5 hover:bg-[rgba(255,255,255,0.85)] transition-colors cursor-pointer"
-            >
-              START A PROJECT
-            </button>
-            <Link
-              href="/projects"
-              className="text-[12px] text-[var(--dim)] hover:text-white transition-colors no-underline tracking-[1px]"
-            >
-              View our work →
-            </Link>
-          </div>
+          {[
+            { value: '27+', label: 'Public Repos' },
+            { value: String(APPS.length), label: 'Live Apps' },
+            { value: '5', label: 'Service Lines' },
+            { value: '24/7', label: 'Ops' },
+          ].map(stat => (
+            <div key={stat.label}>
+              <div className="text-[28px] font-black leading-none tracking-[-1px] text-white md:text-[34px]">{stat.value}</div>
+              <div className="mt-1.5 font-mono text-[11px] uppercase tracking-[1.5px] text-[var(--label)] md:text-[12px]">{stat.label}</div>
+            </div>
+          ))}
         </motion.div>
       </div>
     </>
@@ -165,7 +176,7 @@ function initScene(
   const nodeBuf = new Float32Array(originalPositions.length)
   nodeGeo.setAttribute('position', new THREE.BufferAttribute(nodeBuf, 3))
   const nodeMat = new THREE.PointsMaterial({
-    color: 0xffffff,
+    color: 0xff8a3d,
     size: 0.055,
     transparent: true,
     opacity: 0,
@@ -190,7 +201,7 @@ function initScene(
   const lineBuf = new Float32Array(pairs.length * 6)
   const lineGeo = new THREE.BufferGeometry()
   lineGeo.setAttribute('position', new THREE.BufferAttribute(lineBuf, 3))
-  const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 })
+  const lineMat = new THREE.LineBasicMaterial({ color: 0xff6a00, transparent: true, opacity: 0 })
   const blockchainLines = new THREE.LineSegments(lineGeo, lineMat)
   scene.add(blockchainLines)
 

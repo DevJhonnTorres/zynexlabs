@@ -1,4 +1,4 @@
-import { SERVICES, PROJECTS, STACK_GROUPS, NAV_LINKS } from '@/lib/constants'
+import { SERVICES, PROJECTS, STACK_GROUPS, NAV_LINKS, APPS } from '@/lib/constants'
 
 describe('SERVICES', () => {
   it('has exactly 5 services', () => expect(SERVICES).toHaveLength(5))
@@ -55,5 +55,22 @@ describe('NAV_LINKS', () => {
       expect(l).toHaveProperty('href')
       expect(l.href.startsWith('/')).toBe(true)
     })
+  })
+})
+
+describe('APPS', () => {
+  it('has 10 apps', () => expect(APPS).toHaveLength(10))
+  it('all urls are https', () => {
+    APPS.forEach(a => expect(a.url.startsWith('https://')).toBe(true))
+  })
+  it('slugs are unique', () => {
+    expect(new Set(APPS.map(a => a.slug)).size).toBe(APPS.length)
+  })
+  it('has 6 featured apps', () => expect(APPS.filter(a => a.featured)).toHaveLength(6))
+})
+
+describe('NAV_LINKS order', () => {
+  it('includes Apps after Services', () => {
+    expect(NAV_LINKS.map(l => l.label)).toEqual(['Services', 'Apps', 'Projects', 'About'])
   })
 })

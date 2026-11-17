@@ -45,15 +45,16 @@ jest.mock('three', () => {
 import { ScrollCanvas } from '@/components/canvas/ScrollCanvas'
 
 describe('ScrollCanvas', () => {
-  it('renders a section with a canvas element', () => {
+  it('renders a canvas element', () => {
     const { container } = render(<ScrollCanvas />)
     expect(container.querySelector('canvas')).not.toBeNull()
-    expect(container.querySelector('section')).not.toBeNull()
   })
 
-  it('renders all 4 scroll phrases in the DOM', () => {
-    const { getAllByText } = render(<ScrollCanvas />)
-    // First phrase is visible initially
-    expect(getAllByText('Engineering without compromise.').length).toBeGreaterThan(0)
+  it('renders the hero headline, CTAs and stats', () => {
+    const { getByText, getAllByRole } = render(<ScrollCanvas />)
+    expect(getByText('Engineered.')).toBeTruthy()
+    const hrefs = getAllByRole('link').map(l => l.getAttribute('href'))
+    expect(hrefs).toEqual(expect.arrayContaining(['/contact', '/apps']))
+    expect(getByText('Live Apps')).toBeTruthy()
   })
 })

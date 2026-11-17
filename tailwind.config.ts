@@ -9,10 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        orange: '#FF6A00',
+        accent: '#FF6A00',
+        'accent-2': '#FF8A3D',
       },
       fontFamily: {
-        mono: ['Courier New', 'monospace'],
+        sans: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-geist-mono)', 'ui-monospace', 'monospace'],
       },
     },
   },

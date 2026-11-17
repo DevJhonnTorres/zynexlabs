@@ -20,6 +20,20 @@ export interface Project {
   tech: string[]
   year: string
   status: string
+  url?: string
+  urlLabel?: string
+}
+
+export interface App {
+  slug: string
+  name: string
+  tagline: string
+  description: string
+  url: string
+  category: 'Product' | 'Client' | 'Community' | 'Lab'
+  tags: string[]
+  status: 'Live'
+  featured: boolean
 }
 
 export interface StackGroup {
@@ -69,9 +83,9 @@ export const COMPANY = {
 
 export const NAV_LINKS: NavLink[] = [
   { label: 'Services', href: '/services' },
+  { label: 'Apps',     href: '/apps' },
   { label: 'Projects', href: '/projects' },
   { label: 'About',    href: '/about' },
-  { label: 'Contact',  href: '/contact' },
 ]
 
 export const SERVICES: Service[] = [
@@ -184,6 +198,8 @@ export const PROJECTS: Project[] = [
     tech: ['Solidity', 'Foundry', 'OpenZeppelin', 'Base', 'USDT', 'Ethereum'],
     year: '2026',
     status: 'LIVE',
+    url: 'https://sepolia.basescan.org/address/0x5F737b9455eC9b823A949DDFCB86f0E934025279',
+    urlLabel: 'View contract',
   },
   {
     vertical: 'WEB3 · INFRA',
@@ -196,6 +212,8 @@ export const PROJECTS: Project[] = [
     tech: ['Next.js', 'TypeScript', 'Privy', 'ZKPassport', 'Base', 'Ethereum', 'Optimism'],
     year: '2025',
     status: 'LIVE',
+    url: 'https://1up-wallet.vercel.app',
+    urlLabel: 'Visit',
   },
   {
     vertical: 'WEB3 · NFT',
@@ -220,8 +238,130 @@ export const PROJECTS: Project[] = [
     tech: ['Web3', 'MetaMask', 'Smart Contracts', 'QR Payments', 'JavaScript'],
     year: '2024',
     status: 'DELIVERED',
+    url: 'https://calicoins.netlify.app',
+    urlLabel: 'Visit',
   },
 ]
+
+export const APPS: App[] = [
+  {
+    slug: 'zynex-p2p',
+    name: 'Zynex P2P',
+    tagline: 'Decentralized USDT ⇄ COP exchange',
+    description: 'Buy and sell USDT with Colombian pesos via Nequi, without centralized custody.',
+    url: 'https://zynex-liard.vercel.app',
+    category: 'Product',
+    tags: ['Web3', 'P2P', 'Escrow', 'Base'],
+    status: 'Live',
+    featured: true,
+  },
+  {
+    slug: 'puente402',
+    name: 'Puente402',
+    tagline: 'Charge AI agents in USDC',
+    description: 'Turn any API into a pay-per-use service that AI agents pay for in USDC using the x402 protocol. Built in LATAM.',
+    url: 'https://puente402.vercel.app',
+    category: 'Product',
+    tags: ['AI Agents', 'x402', 'USDC', 'API'],
+    status: 'Live',
+    featured: true,
+  },
+  {
+    slug: 'hashpool',
+    name: 'HashPool',
+    tagline: 'Auditable mining-reward micro-pools',
+    description: 'Infrastructure micro-pools with mining-reward splitting verified on-chain.',
+    url: 'https://hashpool.vercel.app',
+    category: 'Product',
+    tags: ['Web3', 'On-chain', 'Mining'],
+    status: 'Live',
+    featured: true,
+  },
+  {
+    slug: 'anti-fraud-system',
+    name: 'Anti-Fraud System',
+    tagline: 'Surveys & audit with fraud detection',
+    description: 'Survey and audit platform with anti-fraud controls to guarantee data integrity.',
+    url: 'https://sistema-antifraude-front.vercel.app',
+    category: 'Product',
+    tags: ['Security', 'Audit', 'Data'],
+    status: 'Live',
+    featured: true,
+  },
+  {
+    slug: 'eth-cali-wallet',
+    name: 'ETH Cali Wallet',
+    tagline: 'Open-source Web3 wallet',
+    description: 'Fully open-source wallet for the ETH Cali community: email/passkey login, embedded wallets, gas sponsorship.',
+    url: 'https://1up-wallet.vercel.app',
+    category: 'Community',
+    tags: ['Wallet', 'Privy', 'Base'],
+    status: 'Live',
+    featured: true,
+  },
+  {
+    slug: 'calicoins',
+    name: 'CaliCoins',
+    tagline: 'QR crypto payments for city events',
+    description: 'QR-based CaliCoins transfers via MetaMask, built with the Santiago de Cali Mayor\'s Office.',
+    url: 'https://calicoins.netlify.app',
+    category: 'Community',
+    tags: ['Web3', 'QR', 'MetaMask'],
+    status: 'Live',
+    featured: true,
+  },
+  {
+    slug: 'acrilicos-termoformados-jr',
+    name: 'Acrílicos y Termoformados JR',
+    tagline: 'Acrylic manufacturing storefront',
+    description: 'Catalog and lead-generation site for an acrylic signage and thermoforming manufacturer with 25+ years in the market.',
+    url: 'https://acrilicosytermoformados.vercel.app',
+    category: 'Client',
+    tags: ['Web', 'SEO', 'E-commerce'],
+    status: 'Live',
+    featured: false,
+  },
+  {
+    slug: 'eth-cali-merch',
+    name: 'ETH Cali Merch',
+    tagline: 'Official ETH Cali merch store',
+    description: 'Store for the Colombian Pacific Web3 ecosystem: t-shirts, hoodies, stickers.',
+    url: 'https://swagethcali.vercel.app',
+    category: 'Community',
+    tags: ['E-commerce', 'Community'],
+    status: 'Live',
+    featured: false,
+  },
+  {
+    slug: 'fierros-cali',
+    name: 'Fierros Cali',
+    tagline: 'Regulated retail with permit verification',
+    description: 'Storefront for a licensed retailer in Cali that sells only to verified permit holders, with permit-process guidance.',
+    url: 'https://fierros-cali.vercel.app',
+    category: 'Client',
+    tags: ['Web', 'Compliance', 'Leads'],
+    status: 'Live',
+    featured: false,
+  },
+  {
+    slug: 'composite-wars',
+    name: 'Composite Wars',
+    tagline: 'Interactive design-patterns engine',
+    description: 'Interactive visual explorer of software design patterns and algorithm analysis.',
+    url: 'https://composite-wars.vercel.app',
+    category: 'Lab',
+    tags: ['Education', 'Interactive'],
+    status: 'Live',
+    featured: false,
+  },
+]
+
+export const SOCIAL_LINKS = [
+  { label: 'GitHub', href: 'https://github.com/DevJhonnTorres' },
+  { label: 'Founder', href: 'https://jhonn-torres-portfolio.vercel.app' },
+]
+
+export const TECH_STRIP = ['Next.js', 'TypeScript', 'Solidity', 'Base', 'Python', 'OpenAI', 'AWS', 'Docker']
 
 export const STACK_GROUPS: StackGroup[] = [
   {

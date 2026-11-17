@@ -1,15 +1,26 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { AnimatedSection } from '@/components/ui/AnimatedSection'
 import { PageHeader } from '@/components/layout/PageHeader'
-import { PROJECTS } from '@/lib/constants'
+import { Badge } from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
+import { Card } from '@/components/ui/Card'
+import { PROJECTS, APPS } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Projects — Zynex Labs',
-  description: 'Selected work: enterprise AI platforms, Web3 payment protocols, observability systems, and regulatory automation engines.',
+  description: 'Selected work: on-chain escrow, Web3 wallets, NFT auctions and municipal crypto payments, built and shipped by Zynex Labs.',
 }
 
+const smallLabel = 'mb-3 font-mono text-[12px] uppercase tracking-[2px] text-[var(--label)]'
+
 export default function ProjectsPage() {
+  const stats = [
+    { value: String(PROJECTS.length), label: 'Projects Delivered' },
+    { value: '2024', label: 'Year Founded' },
+    { value: String(APPS.length), label: 'Live Apps' },
+    { value: '4', label: 'Industry Verticals' },
+  ]
+
   return (
     <>
       <PageHeader
@@ -18,74 +29,60 @@ export default function ProjectsPage() {
         subtitle="A curated selection of products, platforms, and protocols we have engineered and shipped to production."
       />
 
-      {/* Stats bar */}
-      <section className="border-b border-[var(--border)] px-6 md:px-12 py-10 md:py-12">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { value: '4',    label: 'Projects Delivered' },
-              { value: '2024', label: 'Year Founded' },
-              { value: '100%', label: 'Production Status' },
-              { value: '4',    label: 'Industry Verticals' },
-            ].map(stat => (
-              <div key={stat.label}>
-                <div className="text-[clamp(32px,3.5vw,48px)] font-black tracking-[-2px] text-white leading-none mb-2">
-                  {stat.value}
-                </div>
-                <div className="font-mono text-[9px] text-[var(--dim)] tracking-[3px] uppercase">{stat.label}</div>
+      <section className="border-b border-[var(--border)] px-5 py-10 md:px-12 md:py-12">
+        <div className="mx-auto grid max-w-[1200px] grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
+          {stats.map(stat => (
+            <div key={stat.label}>
+              <div className="mb-2 text-[clamp(32px,4vw,48px)] font-black leading-none tracking-[-1.5px] text-white">
+                <span className="text-gradient-accent">{stat.value}</span>
               </div>
-            ))}
-          </div>
+              <div className="font-mono text-[12px] uppercase tracking-[1.5px] text-[var(--label)]">{stat.label}</div>
+            </div>
+          ))}
         </div>
       </section>
 
       {PROJECTS.map((p, i) => (
         <section
           key={p.hash}
-          className={`border-b border-[var(--border)] px-6 md:px-12 py-10 md:py-20 ${
-            i % 2 === 1 ? 'bg-[var(--surface)]' : ''
-          }`}
+          className={`border-b border-[var(--border)] px-5 py-14 md:px-12 md:py-20 ${i % 2 === 1 ? 'bg-[var(--surface)]' : ''}`}
         >
-          <div className="max-w-[1200px] mx-auto">
-            <div className="grid grid-cols-2 gap-16 items-start">
+          <div className="mx-auto max-w-[1200px]">
+            <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-16">
               <AnimatedSection direction="left">
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-mono text-[8px] tracking-[2px] text-[var(--label)] uppercase">{p.vertical}</span>
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                  <span className="font-mono text-[12px] uppercase tracking-[1.5px] text-accent-2">{p.vertical}</span>
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-[8px] text-[var(--dim)]">{p.year}</span>
-                    <span className="font-mono text-[8px] border border-[var(--border)] text-[var(--label)] px-2 py-0.5">
-                      {p.status}
-                    </span>
+                    <span className="font-mono text-[12px] text-[var(--dim)]">{p.year}</span>
+                    <Badge tone={p.status === 'LIVE' ? 'live' : 'accent'}>{p.status}</Badge>
                   </div>
                 </div>
-                <h2 className="text-[clamp(24px,2.5vw,34px)] font-extrabold tracking-[-1.5px] leading-[1.1] mb-3">
-                  {p.title}
-                </h2>
-                <p className="text-[14px] text-[var(--muted)] mb-6 opacity-50">{p.subtitle}</p>
-                <p className="text-[14px] text-[var(--dim)] leading-[1.9] mb-8 opacity-70">{p.description}</p>
-                <div>
-                  <div className="font-mono text-[9px] tracking-[2px] text-[var(--dim)] mb-3 uppercase">Technologies</div>
-                  <div className="flex flex-wrap gap-2">
-                    {p.tech.map(t => (
-                      <span key={t} className="font-mono text-[9px] text-[var(--dim)] border border-[var(--border)] px-2.5 py-1">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
+                <h2 className="mb-3 text-[clamp(26px,3vw,36px)] font-extrabold leading-[1.1] tracking-[-1px]">{p.title}</h2>
+                <p className="mb-5 text-[16px] font-medium text-[var(--text)]">{p.subtitle}</p>
+                <p className="mb-8 text-[15px] leading-[1.8] text-[var(--muted)]">{p.description}</p>
+                <div className={smallLabel}>Technologies</div>
+                <div className="mb-8 flex flex-wrap gap-2">
+                  {p.tech.map(t => (
+                    <Badge key={t}>{t}</Badge>
+                  ))}
                 </div>
+                {p.url && (
+                  <Button href={p.url} external variant="secondary">
+                    {p.urlLabel ?? 'Visit'} ↗
+                  </Button>
+                )}
               </AnimatedSection>
 
               <AnimatedSection direction="right">
                 <div className="space-y-4">
-                  <div className="border border-[var(--border)] p-7">
-                    <div className="font-mono text-[9px] tracking-[2px] text-[var(--dim)] mb-4 uppercase">The Challenge</div>
-                    <p className="text-[14px] text-[var(--dim)] leading-[1.9] opacity-70">{p.challenge}</p>
-                  </div>
-                  <div className="border border-[rgba(255,255,255,0.12)] p-7 bg-[var(--surface)]">
-                    <div className="font-mono text-[9px] tracking-[2px] text-[var(--label)] mb-4 uppercase">The Outcome</div>
-                    <p className="text-[14px] text-[var(--dim)] leading-[1.9] opacity-70">{p.outcome}</p>
-                  </div>
-                  <div className="font-mono text-[9px] text-[var(--dim)] tracking-[2px]">DELIVERED {p.year}</div>
+                  <Card>
+                    <div className={smallLabel}>The Challenge</div>
+                    <p className="text-[15px] leading-[1.8] text-[var(--muted)]">{p.challenge}</p>
+                  </Card>
+                  <Card highlight>
+                    <div className="mb-3 font-mono text-[12px] uppercase tracking-[2px] text-accent-2">The Outcome</div>
+                    <p className="break-words text-[15px] leading-[1.8] text-[var(--text)]">{p.outcome}</p>
+                  </Card>
                 </div>
               </AnimatedSection>
             </div>
@@ -93,18 +90,14 @@ export default function ProjectsPage() {
         </section>
       ))}
 
-      <section className="px-12 py-24 text-center">
-        <div className="max-w-[560px] mx-auto">
+      <section className="px-5 py-16 md:px-12 md:py-24">
+        <div className="relative mx-auto max-w-[1200px] overflow-hidden rounded-3xl border border-[var(--border-strong)] bg-[var(--bg-elev)] px-6 py-14 text-center md:px-12">
+          <div className="glow-orange pointer-events-none absolute inset-0" aria-hidden="true" />
           <AnimatedSection>
-            <h2 className="text-[clamp(28px,3.5vw,48px)] font-black tracking-[-2px] leading-[1.05] mb-6">
-              Have a project in mind?
-            </h2>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 bg-white text-black font-bold text-[13px] px-10 py-4 hover:bg-[rgba(255,255,255,0.85)] transition-colors no-underline"
-            >
-              Start a Conversation
-            </Link>
+            <div className="relative">
+              <h2 className="mb-8 text-[clamp(28px,4vw,44px)] font-black tracking-[-1.2px]">Have a project in mind?</h2>
+              <Button href="/contact" size="lg">Start a conversation</Button>
+            </div>
           </AnimatedSection>
         </div>
       </section>

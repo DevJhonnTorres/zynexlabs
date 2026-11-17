@@ -1,13 +1,18 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { AnimatedSection } from '@/components/ui/AnimatedSection'
 import { PageHeader } from '@/components/layout/PageHeader'
+import { SectionHeading } from '@/components/ui/SectionHeading'
+import { Badge } from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
+import { ServiceIcon } from '@/components/ui/Icons'
 import { SERVICES, METHODOLOGY_STEPS } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Services — Zynex Labs',
   description: 'Five specialized technology verticals: AI & Automation, Software Development, Blockchain & Web3, Cloud & DevOps, and UI/UX & Product Design.',
 }
+
+const smallLabel = 'mb-4 font-mono text-[12px] uppercase tracking-[2px] text-[var(--label)]'
 
 export default function ServicesPage() {
   return (
@@ -22,46 +27,40 @@ export default function ServicesPage() {
         <section
           key={svc.slug}
           id={svc.slug}
-          className={`border-b border-[var(--border)] px-6 md:px-12 py-10 md:py-20 ${
+          className={`scroll-mt-16 border-b border-[var(--border)] px-5 py-14 md:px-12 md:py-20 ${
             i % 2 === 1 ? 'bg-[var(--surface)]' : ''
           }`}
         >
-          <div className="max-w-[1200px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-10 lg:gap-20 items-start">
-              <div className="sticky top-24">
-                <div className="font-mono text-[10px] tracking-[3px] text-[var(--label)] mb-3">{svc.num}</div>
-                <h2 className="text-[clamp(26px,2.8vw,38px)] font-extrabold tracking-[-1.5px] leading-[1.1] mb-4">
-                  {svc.title}
-                </h2>
-                <p className="text-[14px] text-[var(--muted)] font-medium mb-6 leading-[1.5] opacity-60">
-                  {svc.tagline}
-                </p>
-                <p className="text-[14px] text-[var(--dim)] leading-[1.9] mb-10 opacity-70">{svc.description}</p>
-                <div>
-                  <div className="font-mono text-[9px] tracking-[2px] text-[var(--dim)] mb-4 uppercase">Technologies</div>
-                  <div className="flex flex-wrap gap-2">
-                    {svc.tech.map(t => (
-                      <span
-                        key={t}
-                        className="font-mono text-[10px] text-[var(--dim)] border border-[var(--border)] px-2.5 py-1.5 hover:border-[rgba(255,255,255,0.18)] hover:text-[var(--muted)] transition-colors"
-                      >
-                        {t}
-                      </span>
-                    ))}
+          <div className="mx-auto max-w-[1200px]">
+            <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
+              <div className="lg:sticky lg:top-24">
+                <div className="mb-5 flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[rgba(255,106,0,0.3)] bg-[var(--accent-soft)] text-accent-2">
+                    <ServiceIcon name={svc.icon} />
                   </div>
+                  <span className="font-mono text-[12px] tracking-[2px] text-accent-2">{svc.num}</span>
+                </div>
+                <h2 className="mb-4 text-[clamp(28px,3.5vw,40px)] font-extrabold leading-[1.1] tracking-[-1px]">{svc.title}</h2>
+                <p className="mb-5 text-[17px] font-medium leading-[1.5] text-[var(--text)]">{svc.tagline}</p>
+                <p className="mb-8 text-[15px] leading-[1.8] text-[var(--muted)]">{svc.description}</p>
+                <div className={smallLabel}>Technologies</div>
+                <div className="flex flex-wrap gap-2">
+                  {svc.tech.map(t => (
+                    <Badge key={t}>{t}</Badge>
+                  ))}
                 </div>
               </div>
 
               <div>
-                <div className="font-mono text-[9px] tracking-[2px] text-[var(--dim)] mb-5 uppercase">Scope of Work</div>
-                <div className="divide-y divide-[var(--border)]">
+                <div className={smallLabel}>Scope of Work</div>
+                <div className="divide-y divide-[var(--border)] rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-5 md:px-6">
                   {svc.items.map((item, j) => (
-                    <AnimatedSection key={item} delay={j * 0.04} direction="none">
-                      <div className="py-4 flex items-start gap-5 cursor-default group">
-                        <span className="font-mono text-[9px] text-[var(--dim)] mt-0.5 w-6 shrink-0">
+                    <AnimatedSection key={item} delay={j * 0.03} direction="none">
+                      <div className="group flex cursor-default items-start gap-4 py-4">
+                        <span className="mt-0.5 w-6 shrink-0 font-mono text-[12px] text-accent-2">
                           {String(j + 1).padStart(2, '0')}
                         </span>
-                        <span className="text-[14px] text-[var(--dim)] leading-[1.7] group-hover:text-[var(--muted)] transition-colors opacity-70">
+                        <span className="text-[15px] leading-[1.6] text-[var(--muted)] transition-colors group-hover:text-white">
                           {item}
                         </span>
                       </div>
@@ -75,21 +74,18 @@ export default function ServicesPage() {
       ))}
 
       {/* Methodology */}
-      <section className="border-b border-[var(--border)] px-6 md:px-12 py-16 md:py-24">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="font-mono text-[10px] tracking-[3px] text-[var(--label)] mb-4">METHODOLOGY</div>
-          <h2 className="text-[clamp(28px,3vw,42px)] font-extrabold tracking-[-1.5px] leading-[1.1] mb-16">
-            How We<br />Build
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 relative">
-            <div className="absolute top-[10px] left-0 right-0 h-px bg-[var(--border)]" />
+      <section className="border-b border-[var(--border)] px-5 py-16 md:px-12 md:py-24">
+        <div className="mx-auto max-w-[1200px]">
+          <SectionHeading eyebrow="Methodology" title="How we build" />
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
             {METHODOLOGY_STEPS.map((step, i) => (
-              <AnimatedSection key={step.num} delay={i * 0.1} direction="up">
-                <div className="relative pt-8">
-                  <div className="absolute top-[6px] left-0 w-2 h-2 rounded-full bg-white" />
-                  <div className="font-mono text-[9px] text-[var(--dim)] tracking-[2px] mb-2">{step.num}</div>
-                  <div className="text-[13px] font-bold text-white mb-2">{step.title}</div>
-                  <div className="text-[11px] text-[var(--dim)] leading-[1.7] opacity-70">{step.desc}</div>
+              <AnimatedSection key={step.num} delay={i * 0.08} className="h-full">
+                <div className="h-full rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+                  <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(255,106,0,0.5)] font-mono text-[12px] font-bold text-accent-2">
+                    {String(i + 1).padStart(2, '0')}
+                  </div>
+                  <div className="mb-2 text-[16px] font-bold text-white">{step.title}</div>
+                  <div className="text-[14px] leading-[1.7] text-[var(--muted)]">{step.desc}</div>
                 </div>
               </AnimatedSection>
             ))}
@@ -98,21 +94,15 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="px-6 md:px-12 py-16 md:py-24 text-center">
-        <div className="max-w-[560px] mx-auto">
+      <section className="px-5 py-16 md:px-12 md:py-24">
+        <div className="relative mx-auto max-w-[1200px] overflow-hidden rounded-3xl border border-[var(--border-strong)] bg-[var(--bg-elev)] px-6 py-14 text-center md:px-12">
+          <div className="glow-orange pointer-events-none absolute inset-0" aria-hidden="true" />
           <AnimatedSection>
-            <h2 className="text-[clamp(28px,3.5vw,48px)] font-black tracking-[-2px] leading-[1.05] mb-6">
-              Ready to start a project?
-            </h2>
-            <p className="text-[15px] text-[var(--muted)] leading-[1.75] mb-8 opacity-50">
-              Book a free 30-minute discovery call.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 bg-white text-black font-bold text-[13px] px-10 py-4 hover:bg-[rgba(255,255,255,0.85)] transition-colors duration-200 no-underline"
-            >
-              Book a Discovery Call
-            </Link>
+            <div className="relative">
+              <h2 className="mb-4 text-[clamp(28px,4vw,44px)] font-black tracking-[-1.2px]">Ready to start a project?</h2>
+              <p className="mb-8 text-[16px] text-[var(--muted)]">Book a free 30-minute discovery call.</p>
+              <Button href="/contact" size="lg">Book a discovery call</Button>
+            </div>
           </AnimatedSection>
         </div>
       </section>
