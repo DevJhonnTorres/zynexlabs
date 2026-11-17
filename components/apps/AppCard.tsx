@@ -15,7 +15,8 @@ function hostname(url: string) {
 
 export function AppCard({ app }: { app: App }) {
   const [imgOk, setImgOk] = useState(true)
-  const shot = `https://image.thum.io/get/width/1200/crop/750/${app.url}`
+  // Local screenshots in /public/apps/<slug>.jpg (regenerate when an app changes)
+  const shot = `/apps/${app.slug}.jpg`
 
   return (
     <article className="card-glow group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
