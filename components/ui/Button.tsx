@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { ReactNode, ButtonHTMLAttributes } from 'react'
 
-type Variant = 'primary' | 'secondary' | 'ghost'
+type Variant = 'primary' | 'secondary' | 'inverse' | 'box' | 'ghost'
 
 interface ButtonProps {
   variant?: Variant
@@ -16,11 +16,11 @@ interface ButtonProps {
 }
 
 const VARIANTS: Record<Variant, string> = {
-  primary:
-    'bg-accent text-black hover:bg-accent-2 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_-8px_rgba(255,106,0,0.7)]',
-  secondary:
-    'border border-[var(--border-strong)] text-[var(--text)] hover:border-accent hover:text-accent-2 hover:-translate-y-0.5',
-  ghost: 'text-[var(--muted)] hover:text-white',
+  primary: 'bg-[var(--ink)] text-white border border-[var(--ink)] hover:bg-[#262626] hover:border-[#262626]',
+  secondary: 'bg-white text-[var(--ink)] border border-[var(--ink)] hover:bg-[var(--ink)] hover:text-white',
+  inverse: 'bg-white text-[var(--ink)] border border-white hover:bg-[#e4e4e4] hover:border-[#e4e4e4]',
+  box: 'bg-white text-[var(--ink)] border border-[var(--line)] hover:border-[var(--ink)]',
+  ghost: 'text-[var(--muted)] hover:text-[var(--ink)]',
 }
 
 export function Button({
@@ -34,9 +34,13 @@ export function Button({
   type = 'button',
   disabled,
 }: ButtonProps) {
-  const cls = `inline-flex items-center justify-center gap-2 rounded-full font-semibold no-underline transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:pointer-events-none ${
-    size === 'lg' ? 'text-[15px] px-8 py-3.5' : 'text-[14px] px-6 py-2.5'
-  } ${VARIANTS[variant]} ${className}`
+  const sizing =
+    variant === 'box'
+      ? 'text-[15px] px-5 py-2.5'
+      : size === 'lg'
+        ? 'text-[16px] font-medium px-8 py-4'
+        : 'text-[15px] font-medium px-6 py-3'
+  const cls = `inline-flex items-center justify-center gap-2 rounded-none no-underline transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:pointer-events-none ${sizing} ${VARIANTS[variant]} ${className}`
 
   if (href) {
     if (external || /^https?:|^mailto:/.test(href)) {

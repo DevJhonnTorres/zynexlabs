@@ -3,9 +3,9 @@ import type { ReactNode } from 'react'
 const P = {
   fill: 'none',
   stroke: 'currentColor',
-  strokeWidth: 1.6,
-  strokeLinecap: 'round' as const,
-  strokeLinejoin: 'round' as const,
+  strokeWidth: 1.5,
+  strokeLinecap: "butt" as const,
+  strokeLinejoin: "miter" as const,
 }
 
 const ICONS: Record<string, ReactNode> = {

@@ -9,15 +9,7 @@ import { Button } from '@/components/ui/Button'
 
 export function Navbar() {
   const pathname = usePathname()
-  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   // Close the mobile menu on route change
   useEffect(() => {
@@ -27,60 +19,56 @@ export function Navbar() {
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled || open
-          ? 'border-b border-[var(--border)] backdrop-blur-xl bg-[rgba(7,7,10,0.85)]'
-          : 'border-b border-transparent bg-transparent'
-      }`}
-    >
-      <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-5 md:px-12">
+    <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-white">
+      <div className="mx-auto flex h-[72px] max-w-[1200px] items-center justify-between px-5 md:px-12">
         <Link href="/" className="no-underline" aria-label="Zynex Labs home">
           <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
+        <nav className="hidden items-center gap-9 md:flex" aria-label="Main">
           {NAV_LINKS.map(link => {
             const active = isActive(link.href)
             return (
               <Link
                 key={link.label}
                 href={link.href}
-                className={`relative py-1 text-[14px] no-underline transition-colors duration-200 ${
-                  active ? 'text-white' : 'text-[var(--muted)] hover:text-white'
+                className={`relative py-1 text-[15px] no-underline transition-colors duration-200 ${
+                  active ? 'text-[var(--ink)]' : 'text-[var(--muted)] hover:text-[var(--ink)]'
                 }`}
               >
                 {link.label}
-                {active && <span className="absolute -bottom-0.5 left-0 right-0 h-0.5 rounded-full bg-accent" />}
+                {active && <span className="absolute -bottom-0.5 left-0 right-0 h-px bg-[var(--ink)]" />}
               </Link>
             )
           })}
-          <Button href="/contact">Book a call</Button>
+          <Button href="/contact" variant="box">
+            Contact
+          </Button>
         </nav>
 
         <button
           type="button"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border-strong)] text-white md:hidden"
+          className="flex h-11 w-11 items-center justify-center border border-[var(--line)] text-[var(--ink)] md:hidden"
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
           aria-controls="mobile-menu"
           onClick={() => setOpen(o => !o)}
         >
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
             {open ? <path d="M3 3l12 12M15 3L3 15" /> : <path d="M2 5h14M2 9h14M2 13h14" />}
           </svg>
         </button>
       </div>
 
-      {/* Mobile slide-down panel */}
+      {/* Mobile panel */}
       <div
         id="mobile-menu"
-        className={`overflow-hidden border-[var(--border)] transition-[max-height,opacity] duration-300 md:hidden ${
-          open ? 'max-h-[420px] border-t opacity-100' : 'max-h-0 opacity-0'
+        className={`overflow-hidden border-[var(--line)] bg-white transition-[max-height,opacity] duration-300 md:hidden ${
+          open ? 'max-h-[460px] border-t opacity-100' : 'max-h-0 opacity-0'
         }`}
         aria-hidden={!open}
       >
-        <nav className="flex flex-col gap-1 px-5 pb-6 pt-3" aria-label="Mobile">
+        <nav className="flex flex-col" aria-label="Mobile">
           {NAV_LINKS.map(link => {
             const active = isActive(link.href)
             return (
@@ -88,17 +76,19 @@ export function Navbar() {
                 key={link.label}
                 href={link.href}
                 tabIndex={open ? 0 : -1}
-                className={`rounded-xl px-3 py-3 text-[16px] font-medium no-underline ${
-                  active ? 'bg-[var(--accent-soft)] text-accent-2' : 'text-[var(--text)] hover:bg-[var(--surface-2)]'
+                className={`border-b border-[var(--line)] px-5 py-4 font-display text-[22px] tracking-[-0.02em] no-underline ${
+                  active ? 'bg-[var(--surface)] text-[var(--ink)]' : 'text-[var(--ink)] hover:bg-[var(--surface)]'
                 }`}
               >
                 {link.label}
               </Link>
             )
           })}
-          <Button href="/contact" size="lg" className="mt-3">
-            Book a call
-          </Button>
+          <div className="p-5">
+            <Button href="/contact" size="lg" className="w-full">
+              Book a call
+            </Button>
+          </div>
         </nav>
       </div>
     </header>

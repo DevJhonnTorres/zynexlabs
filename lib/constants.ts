@@ -361,7 +361,7 @@ export const SOCIAL_LINKS = [
   { label: 'Founder', href: 'https://jhonn-torres-portfolio.vercel.app' },
 ]
 
-export const TECH_STRIP = ['Next.js', 'TypeScript', 'Solidity', 'Base', 'Python', 'OpenAI', 'AWS', 'Docker']
+export const TECH_STRIP = ['Next.js', 'TypeScript', 'Solidity', 'Base', 'Python', 'OpenAI', 'AWS', 'Docker', 'Foundry', 'PostgreSQL']
 
 export const STACK_GROUPS: StackGroup[] = [
   {

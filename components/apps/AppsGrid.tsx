@@ -31,21 +31,21 @@ export function AppsGrid() {
                 role="tab"
                 aria-selected={active}
                 onClick={() => setFilter(tab.value)}
-                className={`inline-flex cursor-pointer items-center gap-2 rounded-full border px-4 py-2 text-[14px] font-medium transition-all duration-200 ${
+                className={`inline-flex cursor-pointer items-center gap-2 rounded-none border px-4 py-2.5 text-[14px] font-medium transition-colors duration-200 ${
                   active
-                    ? 'border-accent bg-accent text-black'
-                    : 'border-[var(--border-strong)] text-[var(--muted)] hover:border-accent hover:text-white'
+                    ? 'border-[var(--ink)] bg-[var(--ink)] text-white'
+                    : 'border-[var(--line)] bg-white text-[var(--muted)] hover:border-[var(--ink)] hover:text-[var(--ink)]'
                 }`}
               >
                 {tab.label}
-                <span className={`font-mono text-[11px] ${active ? 'text-black/70' : 'text-[var(--dim)]'}`}>{count}</span>
+                <span className={`font-mono text-[12px] ${active ? 'text-white/70' : 'text-[var(--dim)]'}`}>{count}</span>
               </button>
             )
           })}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         {list.map(app => (
           <AppCard key={app.slug} app={app} />
         ))}

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-type Tone = 'neutral' | 'accent' | 'live'
+type Tone = 'neutral' | 'live'
 
 interface BadgeProps {
   tone?: Tone
@@ -10,15 +10,14 @@ interface BadgeProps {
 }
 
 const TONES: Record<Tone, string> = {
-  neutral: 'border-[var(--border)] bg-[var(--surface)] text-[var(--muted)]',
-  accent: 'border-[rgba(255,106,0,0.35)] bg-[var(--accent-soft)] text-accent-2',
-  live: 'border-[rgba(34,197,94,0.35)] bg-[rgba(34,197,94,0.1)] text-[#4ade80]',
+  neutral: 'border-[var(--line)] bg-white text-[var(--muted)]',
+  live: 'border-[var(--line)] bg-white text-[var(--ink)]',
 }
 
 export function Badge({ tone = 'neutral', children, className = '', mono = true }: BadgeProps) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] leading-none tracking-[0.5px] ${
+      className={`inline-flex items-center gap-1.5 rounded-sm border px-2.5 py-1.5 text-[12px] leading-none ${
         mono ? 'font-mono' : ''
       } ${TONES[tone]} ${className}`}
     >

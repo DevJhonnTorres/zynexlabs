@@ -98,7 +98,7 @@ export function CalendarBooking() {
   const monthLabel = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(month)
 
   return (
-    <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg)] overflow-hidden">
+    <div className="border border-[var(--line)] bg-white overflow-hidden">
       {/* ── Paso 1: calendario ── */}
       {step !== 'done' && (
         <>
@@ -106,15 +106,15 @@ export function CalendarBooking() {
             <div className="flex items-center justify-between mb-5">
               <button
                 onClick={() => setMonth(new Date(year, m - 1, 1))}
-                className="text-[14px] text-[var(--muted)] hover:text-white hover:border-accent transition-colors cursor-pointer px-3 py-1 rounded-full border border-[var(--border-strong)]"
+                className="text-[14px] text-[var(--muted)] hover:text-white hover:bg-[var(--ink)] hover:border-[var(--ink)] transition-colors cursor-pointer px-3 py-1 border border-[var(--line)]"
                 aria-label="Mes anterior"
               >
                 ←
               </button>
-              <div className="font-mono text-[13px] tracking-[2px] uppercase text-white">{monthLabel}</div>
+              <div className="font-mono text-[13px] tracking-[0.15em] uppercase text-[var(--ink)]">{monthLabel}</div>
               <button
                 onClick={() => setMonth(new Date(year, m + 1, 1))}
-                className="text-[14px] text-[var(--muted)] hover:text-white hover:border-accent transition-colors cursor-pointer px-3 py-1 rounded-full border border-[var(--border-strong)]"
+                className="text-[14px] text-[var(--muted)] hover:text-white hover:bg-[var(--ink)] hover:border-[var(--ink)] transition-colors cursor-pointer px-3 py-1 border border-[var(--line)]"
                 aria-label="Mes siguiente"
               >
                 →
@@ -139,12 +139,12 @@ export function CalendarBooking() {
                     key={i}
                     disabled={disabled}
                     onClick={() => pickDay(d)}
-                    className={`aspect-square text-[14px] rounded-lg flex items-center justify-center transition-colors cursor-pointer ${
+                    className={`aspect-square text-[14px] border border-transparent flex items-center justify-center transition-colors cursor-pointer ${
                       selected
-                        ? 'bg-accent text-black font-bold'
+                        ? 'bg-[var(--ink)] text-white font-medium'
                         : disabled
-                          ? 'text-[rgba(245,245,247,0.22)] cursor-not-allowed'
-                          : 'text-[var(--text)] hover:bg-[var(--accent-soft)] hover:text-accent-2'
+                          ? 'text-[#c8c8c8] cursor-not-allowed'
+                          : 'text-[var(--ink)] border-[var(--line)] hover:border-[var(--ink)]'
                     }`}
                   >
                     {d.getDate()}
@@ -153,14 +153,14 @@ export function CalendarBooking() {
               })}
             </div>
             <div className="mt-4 font-mono text-[12px] text-[var(--dim)] tracking-[0.5px]">
-              Lun–Vie · 9:00–17:00 (GMT-5) · Zona horaria de Colombia
+              Mon–Fri · 9:00–17:00 (GMT-5) · Colombia time zone
             </div>
           </div>
 
           {/* ── Paso 2: slots ── */}
           {step === 'slot' && selectedDay && (
             <div className="p-6 border-b border-[var(--border)]">
-              <div className="font-mono text-[12px] tracking-[2px] text-accent-2 mb-4">
+              <div className="font-mono text-[12px] tracking-[0.15em] text-[var(--label)] mb-4">
                 {slot ? 'SELECTED TIME' : 'AVAILABLE TIMES'} —{' '}
                 {new Intl.DateTimeFormat('en-US', { weekday: 'long', day: 'numeric', month: 'long', timeZone: TZ }).format(selectedDay)}
               </div>
@@ -169,7 +169,7 @@ export function CalendarBooking() {
                 <div className="text-[14px] text-[var(--muted)] py-4">Checking availability…</div>
               )}
               {slotsError && (
-                <div className="text-[14px] text-red-400 py-2">{slotsError}</div>
+                <div className="text-[14px] text-red-600 py-2">{slotsError}</div>
               )}
               {!slotsLoading && !slotsError && slots && slots.length === 0 && (
                 <div className="text-[14px] text-[var(--muted)] py-4">
@@ -185,10 +185,10 @@ export function CalendarBooking() {
                         setSlot(s)
                         setStep('confirm')
                       }}
-                      className={`border rounded-lg py-2.5 text-[14px] transition-colors cursor-pointer ${
+                      className={`border py-2.5 text-[14px] transition-colors cursor-pointer ${
                         slot === s
-                          ? 'border-accent bg-accent text-black font-bold'
-                          : 'border-[var(--border-strong)] text-white hover:border-accent hover:text-accent-2'
+                          ? 'border-[var(--ink)] bg-[var(--ink)] text-white font-medium'
+                          : 'border-[var(--line)] text-[var(--ink)] hover:border-[var(--ink)]'
                       }`}
                     >
                       {fmtTime(s)}
@@ -201,7 +201,7 @@ export function CalendarBooking() {
                   setStep('date')
                   setSlot(null)
                 }}
-                className="mt-4 font-mono text-[12px] text-[var(--muted)] hover:text-white tracking-[1.5px] transition-colors cursor-pointer"
+                className="mt-4 font-mono text-[12px] text-[var(--muted)] hover:text-[var(--ink)] tracking-[0.1em] transition-colors cursor-pointer"
               >
                 ← BACK TO CALENDAR
               </button>
@@ -211,8 +211,8 @@ export function CalendarBooking() {
           {/* ── Paso 3: confirmación ── */}
           {step === 'confirm' && slot && selectedDay && (
             <div className="p-6 border-b border-[var(--border)]">
-              <div className="font-mono text-[12px] tracking-[2px] text-accent-2 mb-4">CONFIRM BOOKING</div>
-              <div className="text-[15px] font-bold text-white mb-1">
+              <div className="font-mono text-[12px] tracking-[0.15em] text-[var(--label)] mb-4">CONFIRM BOOKING</div>
+              <div className="font-display text-[20px] font-medium text-[var(--ink)] mb-1">
                 {new Intl.DateTimeFormat('en-US', { weekday: 'long', day: 'numeric', month: 'long', timeZone: TZ }).format(selectedDay)}
               </div>
               <div className="text-[14px] text-[var(--muted)] mb-6">{fmtTime(slot)} — 30 minutes (GMT-5)</div>
@@ -223,7 +223,7 @@ export function CalendarBooking() {
                   value={form.name}
                   onChange={e => setForm({ ...form, name: e.target.value })}
                   placeholder="Your name"
-                  className="w-full bg-transparent border border-[var(--border-strong)] rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-[var(--dim)] outline-none focus:border-accent transition-colors"
+                  className="w-full bg-white border border-[var(--line)] px-4 py-3 text-[15px] text-[var(--ink)] placeholder:text-[var(--dim)] outline-none focus:border-[var(--ink)] transition-colors"
                 />
                 <input
                   required
@@ -231,20 +231,20 @@ export function CalendarBooking() {
                   value={form.email}
                   onChange={e => setForm({ ...form, email: e.target.value })}
                   placeholder="Your email"
-                  className="w-full bg-transparent border border-[var(--border-strong)] rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-[var(--dim)] outline-none focus:border-accent transition-colors"
+                  className="w-full bg-white border border-[var(--line)] px-4 py-3 text-[15px] text-[var(--ink)] placeholder:text-[var(--dim)] outline-none focus:border-[var(--ink)] transition-colors"
                 />
                 <textarea
                   value={form.message}
                   onChange={e => setForm({ ...form, message: e.target.value })}
                   placeholder="Project details (optional)"
                   rows={3}
-                  className="w-full bg-transparent border border-[var(--border-strong)] rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-[var(--dim)] outline-none focus:border-accent transition-colors resize-none"
+                  className="w-full bg-white border border-[var(--line)] px-4 py-3 text-[15px] text-[var(--ink)] placeholder:text-[var(--dim)] outline-none focus:border-[var(--ink)] transition-colors resize-none"
                 />
-                {error && <div className="text-[13px] text-red-400">{error}</div>}
+                {error && <div className="text-[13px] text-red-600">{error}</div>}
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-accent text-black font-bold text-[14px] py-3.5 rounded-full hover:bg-accent-2 transition-colors cursor-pointer disabled:opacity-50"
+                  className="w-full bg-[var(--ink)] text-white font-medium text-[15px] py-3.5 hover:bg-[#262626] transition-colors cursor-pointer disabled:opacity-50"
                 >
                   {submitting ? 'BOOKING…' : 'CONFIRM BOOKING'}
                 </button>
@@ -254,7 +254,7 @@ export function CalendarBooking() {
                     setStep('slot')
                     setSlot(null)
                   }}
-                  className="w-full font-mono text-[12px] text-[var(--muted)] hover:text-white tracking-[1.5px] transition-colors cursor-pointer"
+                  className="w-full font-mono text-[12px] text-[var(--muted)] hover:text-[var(--ink)] tracking-[0.1em] transition-colors cursor-pointer"
                 >
                   ← BACK TO TIMES
                 </button>
@@ -267,15 +267,15 @@ export function CalendarBooking() {
       {/* ── Éxito ── */}
       {step === 'done' && slot && selectedDay && (
         <div className="p-10 text-center">
-          <div className="font-mono text-[12px] tracking-[2px] text-accent-2 mb-5">BOOKING CONFIRMED</div>
-          <div className="text-[20px] font-black text-white mb-2">See you soon.</div>
+          <div className="font-mono text-[12px] tracking-[0.15em] text-[var(--label)] mb-5">BOOKING CONFIRMED</div>
+          <div className="font-display text-[32px] font-medium tracking-[-0.03em] text-[var(--ink)] mb-2">See you soon.</div>
           <div className="text-[15px] text-[var(--muted)] leading-[1.8]">
             {new Intl.DateTimeFormat('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: TZ }).format(selectedDay)}
             <br />
             {fmtTime(slot)} — 30 minutes (GMT-5)
           </div>
           <div className="text-[14px] text-[var(--muted)] mt-4">
-            A calendar invite and reminders were sent to <span className="text-white">{form.email}</span>.
+            A calendar invite and reminders were sent to <span className="text-[var(--ink)]">{form.email}</span>.
           </div>
           <button
             onClick={() => {
@@ -284,7 +284,7 @@ export function CalendarBooking() {
               setSelectedDay(null)
               setForm({ name: '', email: '', message: '' })
             }}
-            className="mt-6 font-mono text-[12px] text-[var(--muted)] hover:text-white tracking-[1.5px] transition-colors cursor-pointer"
+            className="mt-6 font-mono text-[12px] text-[var(--muted)] hover:text-[var(--ink)] tracking-[0.1em] transition-colors cursor-pointer"
           >
             BOOK ANOTHER →
           </button>

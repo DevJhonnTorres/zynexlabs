@@ -14,8 +14,10 @@ export default function AppsPage() {
   return (
     <>
       <PageHeader
-        section="05 · APPS"
-        title="Live apps"
+        number="05"
+        section="Apps"
+        title="Live"
+        titleItalic="apps."
         subtitle="Products and platforms we built that are deployed and running in production today. Click any to try it."
       />
 
@@ -28,14 +30,16 @@ export default function AppsPage() {
       <section className="px-5 pb-20 md:px-12 md:pb-28">
         <div className="mx-auto max-w-[1200px]">
           <AnimatedSection>
-            <div className="relative overflow-hidden rounded-3xl border border-[var(--border-strong)] bg-[var(--bg-elev)] px-6 py-14 text-center md:px-12">
-              <div className="glow-orange pointer-events-none absolute inset-0" aria-hidden="true" />
+            <div className="relative overflow-hidden bg-[var(--ink)] px-6 py-16 text-center text-white md:px-12">
+              <div className="bg-grid-inverse pointer-events-none absolute inset-0" aria-hidden="true" />
               <div className="relative">
-                <h2 className="mb-4 text-[clamp(28px,4vw,44px)] font-extrabold tracking-[-1.2px]">Want yours live next?</h2>
-                <p className="mx-auto mb-8 max-w-[480px] text-[16px] text-[var(--muted)]">
+                <h2 className="mb-4 font-display text-[clamp(36px,5vw,64px)] font-medium leading-[1.02] tracking-[-0.04em]">
+                  Want yours <em>live next?</em>
+                </h2>
+                <p className="mx-auto mb-8 max-w-[480px] text-[17px] text-white/70">
                   Tell us what you need and we will tell you honestly how we would build it.
                 </p>
-                <Button href="/contact" size="lg">Book a free call</Button>
+                <Button href="/contact" size="lg" variant="inverse">Book a free call</Button>
               </div>
             </div>
           </AnimatedSection>
