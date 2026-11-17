@@ -1,6 +1,20 @@
 'use client'
 
 import { useCallback, useState } from 'react'
+import { COMPANY } from '@/lib/constants'
+
+// Shown instead of raw API errors (e.g. missing/expired Google OAuth credentials)
+function BookingFallback({ text }: { text: string }) {
+  return (
+    <div className="border border-[var(--line)] bg-[var(--surface)] p-4 text-[14px] leading-[1.6] text-[var(--muted)]">
+      {text}{' '}
+      <a href={`mailto:${COMPANY.email}?subject=Discovery%20call`} className="font-medium text-[var(--ink)] underline underline-offset-4">
+        Email us at {COMPANY.email}
+      </a>{' '}
+      and we&apos;ll reply within one business day.
+    </div>
+  )
+}
 
 const TZ = 'America/Bogota'
 const fmtTime = (iso: string) =>
@@ -38,7 +52,8 @@ export function CalendarBooking() {
       if (!res.ok) throw new Error(data.error || 'failed')
       setSlots(data.slots || [])
     } catch (e) {
-      setSlotsError(e instanceof Error ? e.message : 'Error cargando disponibilidad')
+      console.error('availability error', e)
+      setSlotsError('unavailable')
     } finally {
       setSlotsLoading(false)
     }
@@ -89,7 +104,8 @@ export function CalendarBooking() {
       if (!res.ok) throw new Error(data.error || 'Error reservando')
       setStep('done')
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error reservando')
+      console.error('booking error', e)
+      setError('failed')
     } finally {
       setSubmitting(false)
     }
@@ -169,7 +185,7 @@ export function CalendarBooking() {
                 <div className="text-[14px] text-[var(--muted)] py-4">Checking availability…</div>
               )}
               {slotsError && (
-                <div className="text-[14px] text-red-600 py-2">{slotsError}</div>
+                <BookingFallback text="Online booking is temporarily unavailable." />
               )}
               {!slotsLoading && !slotsError && slots && slots.length === 0 && (
                 <div className="text-[14px] text-[var(--muted)] py-4">
@@ -240,7 +256,7 @@ export function CalendarBooking() {
                   rows={3}
                   className="w-full bg-white border border-[var(--line)] px-4 py-3 text-[15px] text-[var(--ink)] placeholder:text-[var(--dim)] outline-none focus:border-[var(--ink)] transition-colors resize-none"
                 />
-                {error && <div className="text-[13px] text-red-600">{error}</div>}
+                {error && <BookingFallback text="We couldn't confirm this booking." />}
                 <button
                   type="submit"
                   disabled={submitting}
