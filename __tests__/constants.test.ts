@@ -18,7 +18,13 @@ describe('SERVICES', () => {
 })
 
 describe('PROJECTS', () => {
-  it('has exactly 4 projects', () => expect(PROJECTS).toHaveLength(4))
+  it('has exactly 5 projects', () => expect(PROJECTS).toHaveLength(5))
+  it('includes ZBricks with its live and source URLs', () => {
+    const zbricks = PROJECTS.find(project => project.title === 'ZBricks')
+    expect(zbricks).toBeDefined()
+    expect(zbricks?.url).toBe('https://zbricks.ekinoxis.xyz/')
+    expect(zbricks?.sourceUrl).toBe('https://github.com/DevJhonnTorres/Digital-House')
+  })
   it('each project has required fields', () => {
     PROJECTS.forEach(p => {
       expect(p).toHaveProperty('vertical')
@@ -59,7 +65,12 @@ describe('NAV_LINKS', () => {
 })
 
 describe('APPS', () => {
-  it('has 10 apps', () => expect(APPS).toHaveLength(10))
+  it('has 11 apps', () => expect(APPS).toHaveLength(11))
+  it('includes ZBricks as a live app', () => {
+    const zbricks = APPS.find(app => app.slug === 'zbricks')
+    expect(zbricks).toBeDefined()
+    expect(zbricks?.url).toBe('https://zbricks.ekinoxis.xyz/')
+  })
   it('all urls are https', () => {
     APPS.forEach(a => expect(a.url.startsWith('https://')).toBe(true))
   })

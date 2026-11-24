@@ -77,14 +77,26 @@ export default function ProjectsPage() {
                   ))}
                 </div>
                 {p.url && (
-                  <a
-                    href={p.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[16px] font-medium text-[var(--blue)] no-underline underline-offset-4 hover:text-[var(--ink)] hover:underline"
-                  >
-                    {p.urlLabel ?? 'Visit'} ↗
-                  </a>
+                  <div className="flex flex-wrap gap-6">
+                    <a
+                      href={p.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[16px] font-medium text-[var(--blue)] no-underline underline-offset-4 hover:text-[var(--ink)] hover:underline"
+                    >
+                      {p.urlLabel ?? 'Visit'} ↗
+                    </a>
+                    {p.sourceUrl && (
+                      <a
+                        href={p.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[16px] font-medium text-[var(--muted)] no-underline underline-offset-4 hover:text-[var(--ink)] hover:underline"
+                      >
+                        {p.sourceLabel ?? 'View source'} ↗
+                      </a>
+                    )}
+                  </div>
                 )}
               </AnimatedSection>
 
