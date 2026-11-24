@@ -22,6 +22,8 @@ export interface Project {
   status: string
   url?: string
   urlLabel?: string
+  sourceUrl?: string
+  sourceLabel?: string
 }
 
 export interface App {
@@ -188,6 +190,22 @@ export const SERVICES: Service[] = [
 
 export const PROJECTS: Project[] = [
   {
+    vertical: 'WEB3 · REAL ESTATE',
+    hash: '#3fa7a3',
+    title: 'ZBricks',
+    subtitle: 'Decentralized real-estate rentals powered by crypto',
+    description: 'A decentralized rental platform for property management and bookings, built for ETH Online 2025. ZBricks combines smart-contract rentals, AI-powered pricing, crypto payments, and Privy authentication across Ethereum-compatible testnets.',
+    challenge: 'Property rentals traditionally depend on intermediaries and fragmented payment and identity workflows. ZBricks needs a clearer way to manage properties, rental agreements, authentication, and cross-chain crypto settlement.',
+    outcome: 'Built and deployed a complete rental platform with property management, AI-assisted pricing, stablecoin and native-asset payments, Privy sign-in, and multi-chain testnet support for ETH, USDC, and PYUSD.',
+    tech: ['Next.js', 'TypeScript', 'Solidity', 'Privy', 'AI', 'ETH', 'USDC', 'PYUSD'],
+    year: '2025',
+    status: 'LIVE',
+    url: 'https://zbricks.ekinoxis.xyz/',
+    urlLabel: 'Visit',
+    sourceUrl: 'https://github.com/DevJhonnTorres/Digital-House',
+    sourceLabel: 'View source',
+  },
+  {
     vertical: 'WEB3 · DEFI',
     hash: '#9b3f7d',
     title: 'Escrow & Dispute Resolution Protocol',
@@ -244,6 +262,17 @@ export const PROJECTS: Project[] = [
 ]
 
 export const APPS: App[] = [
+  {
+    slug: 'zbricks',
+    name: 'ZBricks',
+    tagline: 'Decentralized real-estate rentals',
+    description: 'Property management and rentals with AI-powered pricing, crypto payments, and Privy authentication.',
+    url: 'https://zbricks.ekinoxis.xyz/',
+    category: 'Product',
+    tags: ['Web3', 'Real Estate', 'AI', 'Crypto'],
+    status: 'Live',
+    featured: false,
+  },
   {
     slug: 'zynex-p2p',
     name: 'Zynex P2P',

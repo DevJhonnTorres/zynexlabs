@@ -73,6 +73,71 @@ em { font-style: italic; font-weight: 400; }
 }
 .pulse-dot { animation: pulse-dot 2s ease-out infinite; }
 
+.loading-grid {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 100px 100px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 48%, #000 20%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 48%, #000 20%, transparent 100%);
+  animation: loading-grid-in 1.8s cubic-bezier(.22,.61,.36,1) both;
+}
+
+@keyframes loading-grid-in {
+  from { opacity: 0; transform: scale(1.08); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.loading-reveal {
+  opacity: 0;
+  animation: loading-reveal .8s cubic-bezier(.22,.61,.36,1) .18s forwards;
+}
+
+.loading-title {
+  opacity: 0;
+  animation: loading-title-in 1.1s cubic-bezier(.22,.61,.36,1) .38s forwards;
+}
+
+@keyframes loading-reveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes loading-title-in {
+  from { opacity: 0; transform: translateY(38px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.loading-intro {
+  transform-origin: bottom;
+  animation: loading-intro-in .55s cubic-bezier(.22,.61,.36,1) both;
+}
+
+.loading-exiting {
+  animation: loading-intro-out .7s cubic-bezier(.76,0,.24,1) both;
+  pointer-events: none;
+}
+
+.loading-exiting main,
+.loading-exiting header,
+.loading-exiting footer {
+  animation: loading-content-out .55s cubic-bezier(.76,0,.24,1) both;
+}
+
+@keyframes loading-intro-in {
+  from { clip-path: inset(100% 0 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes loading-intro-out {
+  from { clip-path: inset(0 0 0 0); }
+  to { clip-path: inset(0 0 100% 0); }
+}
+
+@keyframes loading-content-out {
+  to { opacity: 0; transform: translateY(-18px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
