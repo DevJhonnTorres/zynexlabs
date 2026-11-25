@@ -50,7 +50,6 @@ export const metadata: Metadata = {
   openGraph: {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    url: SITE_URL,
     siteName: 'Zynex Labs',
     locale: 'en_US',
     type: 'website',

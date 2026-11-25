@@ -73,17 +73,17 @@ export function LoadingIntro() {
         </div>
       </header>
 
-      <main className="relative flex flex-1 items-center px-5 md:px-12">
+      <div className="relative flex flex-1 items-center px-5 md:px-12">
         <div className="mx-auto w-full max-w-[1200px]">
           <p className="loading-reveal mb-5 font-mono text-[11px] uppercase tracking-[0.28em] text-white/45">
             Advanced technology infrastructure
           </p>
-          <h1 className="loading-title max-w-[900px] font-display text-[clamp(52px,9vw,124px)] font-medium leading-[0.92] tracking-[-0.055em]">
+          <p aria-hidden="true" className="loading-title max-w-[900px] font-display text-[clamp(52px,9vw,124px)] font-medium leading-[0.92] tracking-[-0.055em]">
             Trust,<br />
             <em className="text-white/72">Engineered.</em>
-          </h1>
+          </p>
         </div>
-      </main>
+      </div>
 
       <footer className="relative border-t border-white/10 px-5 py-5 md:px-12">
         <div className="mx-auto flex w-full max-w-[1200px] items-center gap-5">
