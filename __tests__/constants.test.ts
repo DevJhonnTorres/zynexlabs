@@ -65,7 +65,7 @@ describe('NAV_LINKS', () => {
 })
 
 describe('APPS', () => {
-  it('has 11 apps', () => expect(APPS).toHaveLength(11))
+  it('has 16 apps', () => expect(APPS).toHaveLength(16))
   it('includes ZBricks as a live app', () => {
     const zbricks = APPS.find(app => app.slug === 'zbricks')
     expect(zbricks).toBeDefined()
