@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/Button'
 import { PROJECTS, APPS } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Projects — Zynex Labs',
+  title: 'Projects',
+  alternates: { canonical: '/projects' },
   description: 'Selected work: on-chain escrow, Web3 wallets, NFT auctions and municipal crypto payments, built and shipped by Zynex Labs.',
 }
 

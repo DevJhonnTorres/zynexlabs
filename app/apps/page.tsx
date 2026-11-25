@@ -5,7 +5,8 @@ import { AnimatedSection } from '@/components/ui/AnimatedSection'
 import { Button } from '@/components/ui/Button'
 
 export const metadata: Metadata = {
-  title: 'Live Apps — Zynex Labs',
+  title: 'Live Apps',
+  alternates: { canonical: '/apps' },
   description:
     'Products and platforms built by Zynex Labs that are deployed and running in production today: Web3 exchanges, AI agent payments, wallets, storefronts and more.',
 }

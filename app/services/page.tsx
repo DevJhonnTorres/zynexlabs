@@ -8,8 +8,9 @@ import { ServiceIcon } from '@/components/ui/Icons'
 import { SERVICES, METHODOLOGY_STEPS } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Services — Zynex Labs',
-  description: 'Five specialized technology verticals: AI & Automation, Software Development, Blockchain & Web3, Cloud & DevOps, and UI/UX & Product Design.',
+  title: 'Services',
+  alternates: { canonical: '/services' },
+  description: 'Zynex Labs services — five specialized technology verticals: AI & Automation, Software Development, Blockchain & Web3, Cloud & DevOps, and UI/UX & Product Design.',
 }
 
 const smallLabel = 'mb-4 text-[12px] uppercase tracking-[0.25em] text-[var(--label)]'

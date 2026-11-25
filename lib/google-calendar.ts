@@ -120,7 +120,7 @@ export async function createBooking(opts: {
 
   const event = {
     summary: `Discovery Call — ${name}${email ? ` (${email})` : ''}`,
-    description: `Agendada desde zynexlabs-lemon.vercel.app\n\nCliente: ${name}\nEmail: ${email}\n${message ? `Mensaje: ${message}\n` : ''}`,
+    description: `Agendada desde zynexlabs.tech\n\nCliente: ${name}\nEmail: ${email}\n${message ? `Mensaje: ${message}\n` : ''}`,
     start: { dateTime: start.toISOString(), timeZone: TIME_ZONE },
     end: { dateTime: end.toISOString(), timeZone: TIME_ZONE },
     reminders: {

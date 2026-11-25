@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/Button'
 import { COMPANY, STACK_GROUPS } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'About — Zynex Labs',
+  title: 'About',
+  alternates: { canonical: '/about' },
   description: 'Zynex Labs S.A.S. — advanced technology infrastructure company founded in Colombia in 2024.',
 }
 
