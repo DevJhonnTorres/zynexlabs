@@ -3,22 +3,14 @@ interface LogoProps {
   size?: 'md' | 'lg'
 }
 
-/** Solid black square mark with an angular white "Z", followed by the ZYNEX LABS wordmark. */
+/** Isometric cube mark followed by the ZYNEX LABS wordmark (single transparent PNG, 816x294). */
 export function Logo({ className = '', size = 'md' }: LogoProps) {
-  const mark = size === 'lg' ? 32 : 24
+  const height = size === 'lg' ? 48 : 36
+  const width = Math.round((height * 840) / 318)
   return (
-    <span className={`inline-flex items-center gap-2.5 text-[var(--ink)] ${className}`} aria-label="Zynex Labs">
-      <svg width={mark} height={mark} viewBox="0 0 24 24" aria-hidden="true" className="shrink-0">
-        <rect width="24" height="24" fill="#0a0a0a" />
-        <polygon points="6,6 18,6 18,9 10.5,15 18,15 18,18 6,18 6,15 13.5,9 6,9" fill="#ffffff" />
-      </svg>
-      <span
-        className={`font-display font-semibold leading-none tracking-[-0.02em] ${
-          size === 'lg' ? 'text-[26px]' : 'text-[20px]'
-        }`}
-      >
-        ZYNEX LABS
-      </span>
+    <span className={`inline-flex items-center ${className}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo-full.png" alt="Zynex Labs" width={width} height={height} className="shrink-0" style={{ height, width: 'auto' }} />
     </span>
   )
 }
