@@ -440,8 +440,40 @@ export const APPS: App[] = [
   },
 ]
 
+export const FOUNDER = {
+  name: 'Jhonn Torres',
+  role: 'Founder & CEO',
+  tagline: 'Web3 protocol design · AI · Cali, Colombia',
+  location: 'Cali, Colombia',
+  email: 'torres.castro.alex@gmail.com',
+  phone: '+57 305 418 4380',
+  phoneHref: 'tel:+573054184380',
+  whatsapp: 'https://wa.me/573054184380',
+  portfolio: 'https://jhonn-torres-portfolio.vercel.app',
+  bio: [
+    'I am a technical founder building Web3 infrastructure and AI systems. I started Zynex Labs in 2024 because I wanted a company where the person who designs the system is the same person who writes, audits and ships it.',
+    'I design and deploy smart-contract protocols — including an on-chain escrow and dispute-resolution protocol live on Base Sepolia — and I build the products, wallets and AI automation around them.',
+    'I also founded the ETH Cali ecosystem, an open community that brings the Ethereum ecosystem to Cali, and I have built crypto-payment tools for the Cali Mayor\'s Office. I am studying Systems Engineering at Universidad Santiago de Cali.',
+  ],
+  highlights: [
+    { value: '2024', label: 'Founded Zynex Labs S.A.S.' },
+    { value: '5', label: 'Service lines: AI, software, Web3, cloud, design' },
+    { value: 'ETH Cali', label: 'Founder of the local Ethereum community' },
+    { value: '0', label: 'Critical findings in our smart-contract audit' },
+  ],
+  focus: ['Solidity', 'Escrow & stablecoins', 'AI agents', 'Next.js', 'Company building 0→1'],
+  socials: [
+    { label: 'LinkedIn', handle: 'jhonnalexandertorrescastro', href: 'https://linkedin.com/in/jhonnalexandertorrescastro' },
+    { label: 'X / Twitter', handle: '@The_Aleeeex', href: 'https://x.com/The_Aleeeex' },
+    { label: 'GitHub', handle: 'DevJhonnTorres', href: 'https://github.com/DevJhonnTorres' },
+    { label: 'Portfolio', handle: 'jhonn-torres-portfolio.vercel.app', href: 'https://jhonn-torres-portfolio.vercel.app' },
+  ],
+}
+
 export const SOCIAL_LINKS = [
   { label: 'GitHub', href: 'https://github.com/DevJhonnTorres' },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/jhonnalexandertorrescastro' },
+  { label: 'X / Twitter', href: 'https://x.com/The_Aleeeex' },
   { label: 'Founder', href: 'https://jhonn-torres-portfolio.vercel.app' },
 ]
 
