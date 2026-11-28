@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     siteName: 'Zynex Labs',
     locale: 'en_US',
     type: 'website',
-    images: [{ url: '/logo.png', width: 1693, height: 929, alt: 'Zynex Labs' }],
+    images: [{ url: '/logo.png', width: 1200, height: 630, alt: 'Zynex Labs' }],
   },
   twitter: {
     card: 'summary_large_image',
