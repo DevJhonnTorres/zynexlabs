@@ -61,11 +61,8 @@ export function LoadingIntro() {
       <header className="relative flex h-[72px] shrink-0 items-center border-b border-white/10 px-5 md:px-12">
         <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between">
           <div className="loading-reveal flex items-center gap-3">
-            <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
-              <rect width="24" height="24" fill="#ffffff" />
-              <polygon points="6,6 18,6 18,9 10.5,15 18,15 18,18 6,18 6,15 13.5,9 6,9" fill="#090909" />
-            </svg>
-            <span className="font-display text-[18px] font-semibold tracking-[-0.02em]">ZYNEX LABS</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-full-white.png" alt="Zynex Labs" width={95} height={36} style={{ height: 36, width: 'auto' }} />
           </div>
           <span className="loading-reveal font-mono text-[11px] uppercase tracking-[0.22em] text-white/45">
             Loading experience
